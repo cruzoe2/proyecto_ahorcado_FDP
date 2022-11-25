@@ -34,7 +34,7 @@ int main()
     // en este caso son, una longitud igual o mayor a 6 caracteres, que solo tenga letras y espacios, y que no hayan espacios al inicio o al final de la palabra o frase
     while (length < 6 || nonchar > 0 || space > 0)
     {
-        // se reinician ciertos valores si acaso 
+        // se reinician ciertos valores si acaso
         length = 0;
         nonchar = 1;
 
@@ -60,7 +60,8 @@ int main()
         for (count = 0; count < length; count++)
         {
             if (isalpha(str[count]) || isblank(str[count]))
-            {}
+            {
+            }
             else
             {
                 nonchar++;
@@ -108,7 +109,7 @@ int main()
         fprintf(mid, "%s\n", palabra);
     }
     // si la longitud es superior a 19, sera guardado en el documento de dificultad dificil
-    else if(strlen(palabra) > 19)
+    else if (strlen(palabra) > 19)
     {
         fprintf(hard, "%s\n", palabra);
     }
