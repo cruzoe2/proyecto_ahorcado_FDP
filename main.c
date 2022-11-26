@@ -188,7 +188,7 @@ int ingresarPalabras()
 			nonchar = 1;
 
 			// se le pide al usuario ingresar una palabra o frase y se guarda en el array "str"
-			printf("Ingrese palabras o frases para incluirlas en el juego, minimo 6 espacios: ");
+			printf("\nIngrese palabras o frases para incluirlas en el juego, minimo 6 espacios: ");
 			fgets(str, sizeof(str), stdin);
 
 			// este es un bucle que permite verificar la longitud de la palabra o frase
@@ -202,7 +202,7 @@ int ingresarPalabras()
 			// si hay menos de 6 letras, se pide que se ingrese una palabra o frase con al menos 6 espacios
 			if (length < 6)
 			{
-				printf("Por favor ingrese una palabra o frase con al menos 6 espacios\n\n");
+				printf("\nPor favor ingrese una palabra o frase con al menos 6 espacios\n");
 			}
 
 			// luego, para cada caracter de lo ingresado, se verifica que sean solo letras o espacios, sino se suma uno a nonchar cada vez que se detecta un caracter extraño
@@ -226,7 +226,7 @@ int ingresarPalabras()
 			// si se encuentra algo que no sea una letra o espacio, se imprime un mensaje de informacion
 			if (nonchar > 0)
 			{
-				printf("Por favor ingrese una palabra o frase sin numeros o caracteres especiales\n\n");
+				printf("\nPor favor ingrese una palabra o frase sin numeros o caracteres especiales\n");
 			}
 
 			// si se encuentran espacios al inicio o al final de la frase o palabra, se imprime un mensaje de informacion y se reinicia el loop
@@ -234,7 +234,7 @@ int ingresarPalabras()
 			if (isblank(str[0]) || isblank(str[(length - 1)]))
 			{
 				space = 1;
-				printf("Por favor ingrese una palabra o frase sin espacios al inicio o al final\n\n");
+				printf("\nPor favor ingrese una palabra o frase sin espacios al inicio o al final\n");
 			}
 			else
 			{
