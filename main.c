@@ -3,7 +3,7 @@
 #include <string.h>
 #include <conio.h>
 #include <time.h>
-
+#include <windows.h>
 #include <math.h>
 #include <ctype.h>
 #define LONGITUD_MAXIMA_CADENA 1000
@@ -17,7 +17,7 @@ void niveldificil();
 int ingresarPalabras();
 void tabla();
 int juego();
-void rotulo(int e);
+void puntaje(int e);
 void gotoxy(short x, short y);
 
 // FUNCION PRINCIPAL MAIN
@@ -111,38 +111,28 @@ int juego()
 
 void nivelFacil()
 {
-	char const s[] = "\n\t";
-	char *token;
-	char arreglo[LONGITUD_MAXIMA_CADENA];
-	int longitud;
-	FILE *archivo = fopen("facil.txt", "r");
-	char bufer[LONGITUD_MAXIMA_CADENA]; // Aquí vamos a ir almacenando cada línea
+	char palabras[50][50], respuesta[40], letra, res, res1;
+	FILE *archivo;
+	int c, i = 0;
+	int longitud, conta, i, j, e, error;
 
-	while (fgets(bufer, LONGITUD_MAXIMA_CADENA, archivo))
+	archivo = fopen("facil.txt", "r"); // abre el archivo en solo lectura
+
+	// toma las palabras linea a linea de el txt mientras que no sea End of File
+	while (c != EOF)
 	{
-		longitud = strlen(bufer);
-
-		token = strtok(bufer, s);
-		// La imprimimos, pero realmente podríamos hacer cualquier otra cosa
-		while (token != NULL)
-		{
-			printf("\n%s\n", token);
-			token = strtok(NULL, s);
-			for (int i = 0; i <= longitud; i++)
-			{
-
-				arreglo[i] = bufer[i];
-				putchar(arreglo[i]);
-			}
-		}
+		c = fscanf(archivo, "%s", palabras[i]); // guardando las palabras en un arreglo
+		i++;
 	}
-
-	printf("\n %d", longitud);
 }
 
-// mostrar los puntajes de cada jugador
-void puntajes()
+// mostrar y guardar el puntaje
+void puntaje(int e)
 {
+	int f = 0;
+	f = 20 - e;
+
+	printf("Usted tiene %d oportunidades restantes. ", f);
 }
 
 // Funcion ingresar palabras
@@ -188,7 +178,7 @@ int ingresarPalabras()
 			nonchar = 1;
 
 			// se le pide al usuario ingresar una palabra o frase y se guarda en el array "str"
-			printf("\nIngrese palabras o frases para incluirlas en el juego, minimo 6 espacios, o ingrese 1 para regresar al menu principal: ");
+			printf("\nIngrese palabras o frases para incluirlas en el juego, minimo 6 espacios, o ingrese 1 para regresar al menu principal:\n");
 			fgets(str, sizeof(str), stdin);
 
 			// si se selecciona 1, se regresa al menu principal
