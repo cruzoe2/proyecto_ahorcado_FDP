@@ -188,8 +188,18 @@ int ingresarPalabras()
 			nonchar = 1;
 
 			// se le pide al usuario ingresar una palabra o frase y se guarda en el array "str"
-			printf("\nIngrese palabras o frases para incluirlas en el juego, minimo 6 espacios: ");
+			printf("\nIngrese palabras o frases para incluirlas en el juego, minimo 6 espacios, o ingrese 1 para regresar al menu principal: ");
 			fgets(str, sizeof(str), stdin);
+
+			// si se selecciona 1, se regresa al menu principal
+			if (str[0] == '1')
+			{
+				// se cierran los documentos
+				fclose(ez);
+				fclose(mid);
+				fclose(hard);
+				menu();
+			}
 
 			// este es un bucle que permite verificar la longitud de la palabra o frase
 			while (str[length] != '\0')
@@ -268,12 +278,16 @@ int ingresarPalabras()
 			fprintf(ez, "%s\n", palabra);
 		}
 
+		// se declara que nueva sea igual a 0 de nuevo para ingresar en el siguiente loop
 		nueva = 0;
 
+		// este loop sirve para que el usuario seleccione entre agregar una nueva palabra y regresar al menu principal
 		while (nueva != 1)
 		{
 			printf("\nEscriba 1 para ingresar una nueva palabra y 2 para regresar al menu principal: ");
 			scanf("%d", &nueva);
+
+			// si se selecciona 2, se guardan las palabras que se ingresaron y se regresa al menu principal
 			if (nueva == 2)
 			{
 				// se cierran los documentos
@@ -282,11 +296,13 @@ int ingresarPalabras()
 				fclose(hard);
 				menu();
 			}
-			if (nueva != 2 && nueva != 1)
+			// si se selecciona cualquier otro numero, se pide al usuario ingresar o 1 o 2
+			else if (nueva != 2 && nueva != 1)
 			{
 				printf("Por favor ingrese 1 o 2\n");
 				nueva = 0;
 			}
+			// si se ingresa 1, el valor de la variable "nueva" sigue siendo 1
 			else
 			{
 				nueva = 1;
