@@ -1,70 +1,143 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <conio.h>
+#include <time.h>
+#include <windows.h>
+#include <math.h>
 #include <ctype.h>
+#define LONGITUD_MAXIMA_CADENA 1000
 
-// PROTOTIPOS DE LAS FUNCIONES
+// Prototipo de funciones
 void menu();
-void jugar();
-void puntajes();
-void dificultad();
+void carga();
+void nivelFacil();
+void nivelintermedio();
+void niveldificil();
 int ingresarPalabras();
+void tabla();
+int juego();
+void rotulo(int e);
+void gotoxy(short x, short y);
 
 // FUNCION PRINCIPAL MAIN
 int main()
 {
 
+	// llamando a menu
 	menu();
 
 	return 0;
 }
 
-// funcion  de menu seleccion
+// FUNCION DEL MENU seleccionada
+
 void menu()
 {
-	int opcion;
+	char opcion;
 	do
-	{
-
-		printf("\n\t\t\t\tJUEGO EL AHORCADO\n\n");
-		printf(" Seleccione una de las siguientes opciones: \n\n");
-		printf(" 1. Jugar\n");
-		printf(" 2. Tabla de posiciones\n");
-		printf(" 3. Ingresar palabras\n");
-		printf(" Ingresa una opcion: ");
-		scanf("%d", &opcion);
-	} while (opcion < 1 || opcion > 3);
-
-	if (opcion == 1)
-	{
-		dificultad(opcion);
-	} // manda a la funcion dificultad para seleccionar el modo que desea jugar
-
-	if (opcion == 2)
-	{
-		puntajes(opcion);
-	} // revisar el puntaje de cada jugador por nivel de difcultad
-
-	if (opcion == 3)
-	{
+	{ // imprime el menu principal varias veces hasta que sea necesario
+		system("cls");
+		printf("\n\t\t\tJUEGO DEL AHORCADO \n\t\t\t");
+		printf("Seleccione una categoria \n");
+		printf("1.Jugar \n");
+		printf("2.Ingresar Palabras\n");
+		printf("3.Tabla de posiciones \n");
+		printf("4.Salir \n");
+		printf("Ingrese opcion: ");
+		scanf("%c", &opcion);
+	} while (opcion < '1' || opcion > '4'); // evalua los datos ingresados por el usuario
+	switch (opcion)
+	{ // seleeciona el caso ingresado por el usuario
+	case '1':
+		juego();
+		break; // llamado a la funcion juego
+	case '2':
 		ingresarPalabras();
-	} // para que el usuario pueda ingresar las palabras deseadas
+		break; // ingresar palabras
+	case '3':
+		// void tabla()
+		break; // llamado a la funcion tabla de posiciones
+	case '4':
+		printf("\n\nGracias por utilizar nuestro programa.....\n\n");
+		break;
+	}
 }
 
-// se escoge el nivel de difcultad para continuar con el juego
-void dificultad()
+// FUNCION PRINCIPAL DEL JUEGO
+int juego()
 {
-	int nivel;
+
+	// variables
+	int op;
+	char player[25]; // guardando nombre del usuario
+
+	// inicio del juego y obteniedo nombre del usuario
+	printf("\n\t\t\t\tJUEGO DEL AHORCADO\n\t\t\t\t");
+	printf("\nIngrese su nombre: ");
+	fflush(stdin);
+	gets(player);
+	system("cls");
+	printf("Bienvenido %s a nuestro juego", player);
+
 	do
 	{
+		system("cls");
+		printf("\n\t\t\t\tJUEGO DEL AHORCADO\n\t\t\t\t");
+		printf("SELECCIONE EL NIVEL DE DIFICULTAD CON EL DESEA JUGAR \n");
+		printf("1. Nivel Facil \n");
+		printf("2. Nivel intermedio \n");
+		printf("3. Nivel Dificil \n");
+		printf("4. Regresar al menu principal \n");
+		scanf("%d", &op);
+	} while (op < 1 || op > 4);
 
-		printf("\n\t\t\t\tJUEGO EL AHORCADO\n\n");
-		printf(" Seleccione el nivel de dificultad en el que desea jugar \n\n");
-		printf(" 1. Facil\n");
-		printf(" 2. Intermedio\n");
-		printf(" 3. Dificil\n");
-		printf(" Ingresa una opcion: ");
-		scanf("%d", &nivel);
-	} while (nivel < 1 || nivel > 3);
+	switch (op)
+	{
+	case 1:
+		nivelFacil();
+		break;
+	case 2:
+
+		break;
+	case 3:
+
+		break;
+	case 4:
+		menu(); // regresando al menu
+		break;
+	}
+}
+
+void nivelFacil()
+{
+	char const s[] = "\n\t";
+	char *token;
+	char arreglo[LONGITUD_MAXIMA_CADENA];
+	int longitud;
+	FILE *archivo = fopen("facil.txt", "r");
+	char bufer[LONGITUD_MAXIMA_CADENA]; // Aquí vamos a ir almacenando cada línea
+
+	while (fgets(bufer, LONGITUD_MAXIMA_CADENA, archivo))
+	{
+		longitud = strlen(bufer);
+
+		token = strtok(bufer, s);
+		// La imprimimos, pero realmente podríamos hacer cualquier otra cosa
+		while (token != NULL)
+		{
+			printf("\n%s\n", token);
+			token = strtok(NULL, s);
+			for (int i = 0; i <= longitud; i++)
+			{
+
+				arreglo[i] = bufer[i];
+				putchar(arreglo[i]);
+			}
+		}
+	}
+
+	printf("\n %d", longitud);
 }
 
 // mostrar los puntajes de cada jugador
@@ -72,7 +145,7 @@ void puntajes()
 {
 }
 
-// ingresar palabras
+// Funcion ingresar palabras
 int ingresarPalabras()
 {
 	// se abren los archivos que contendran las palabras
@@ -113,13 +186,10 @@ int ingresarPalabras()
 		printf("Ingrese palabras o frases para incluirlas en el juego, minimo 6 espacios: ");
 		fgets(str, sizeof(str), stdin);
 
-		
-
 		// este es un bucle que permite verificar la longitud de la palabra o frase
 		while (str[length] != '\0')
 		{
 			length++;
-			printf("str es %s\n\n", str[length]);
 		}
 		// se tiene que restar uno a length ya que el string se almacena con una posicion vacia al final
 		length--;
@@ -197,5 +267,4 @@ int ingresarPalabras()
 	fclose(ez);
 	fclose(mid);
 	fclose(hard);
-	return 0;
 }
