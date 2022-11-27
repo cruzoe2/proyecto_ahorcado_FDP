@@ -143,14 +143,14 @@ void nivelFacil(char nombrejugador[])
 	int n = rand() % i;
 
 	// debug, se imprimen cada una de las posiciones del arreglo ademas de valores utiles
-		for (conta = 0; conta < i; conta++)
-		{
-			printf("%s|", palabras[conta]);
-		}
-	
-		printf("\nNumero aleatorio es %d\n", n);
-		printf("La palabra aleatoria es %s\n", palabras[n]);
-		printf("El nombre es %s\n", nombrejugador);
+	for (conta = 0; conta < i; conta++)
+	{
+		printf("%s|", palabras[conta]);
+	}
+
+	printf("\nNumero aleatorio es %d\n", n);
+	printf("La palabra aleatoria es %s\n", palabras[n]);
+	printf("El nombre es %s\n", nombrejugador);
 
 	juego(palabras[n]); // mandando el valor a la funcion juego
 	tablaPosiciones(nombrejugador);
@@ -175,14 +175,14 @@ void nivelIntermedio(char nombrejugador[])
 	int n = rand() % i;
 
 	// debug, se imprimen cada una de las posiciones del arreglo ademas de valores utiles
-		for (conta = 0; conta < i; conta++)
-		{
-			printf("%s|", palabras[conta]);
-		}
-	
-		printf("\nNumero aleatorio es %d\n", n);
-		printf("La palabra aleatoria es %s\n", palabras[n]);
-		printf("El nombre es %s\n", nombrejugador);
+	for (conta = 0; conta < i; conta++)
+	{
+		printf("%s|", palabras[conta]);
+	}
+
+	printf("\nNumero aleatorio es %d\n", n);
+	printf("La palabra aleatoria es %s\n", palabras[n]);
+	printf("El nombre es %s\n", nombrejugador);
 
 	juego(palabras[n]); // mandando el valor a la funcion juego
 	tablaPosiciones(nombrejugador);
@@ -207,14 +207,14 @@ void nivelDificil(char nombrejugador[])
 	int n = rand() % i;
 
 	// debug, se imprimen cada una de las posiciones del arreglo ademas de valores utiles
-		for (conta = 0; conta < i; conta++)
-		{
-			printf("%s|", palabras[conta]);
-		}
-	
-		printf("\nNumero aleatorio es %d\n", n);
-		printf("La palabra aleatoria es %s\n", palabras[n]);
-		printf("El nombre es %s\n", nombrejugador);
+	for (conta = 0; conta < i; conta++)
+	{
+		printf("%s|", palabras[conta]);
+	}
+
+	printf("\nNumero aleatorio es %d\n", n);
+	printf("La palabra aleatoria es %s\n", palabras[n]);
+	printf("El nombre es %s\n", nombrejugador);
 
 	juego(palabras[n]); // mandando el valor a la funcion juego
 	tablaPosiciones(nombrejugador);
@@ -222,63 +222,89 @@ void nivelDificil(char nombrejugador[])
 
 int juego(char palabras[])
 {
-	int longitud, error, e, i, j, contador, puntos = 0;
-	char palabra[30], respuesta[30], letra, res, res1;
+	// se declaran variables de uso interno y el array de la palabra a utilizar, ademas de las letras que el usuario ingrese
+	int longitud, error, intentos=0, i, contador=0, puntos = 0;
+	char respuesta[100], letra, res, res1;
 
 	do
 	{
+		// se calcula la longitud de la respuesta
 		longitud = strlen(palabras);
-		e = 0; // contabilizador de errores inicia en 0
-		contador = 0;
-		strcpy(palabra, palabras);
+		intentos = 0; // contabilizador de intentos fallidos inicia en 0
+		contador = 0; // contador interno
 
+		// este bucle es para mostrar las letras como "_" y los espacios de la frase (si es que tiene)
 		for (i = 0; i < longitud; i++)
 		{
 			fflush(stdin);
-			respuesta[i] = '_';			  // se almacena _ en un vector
-			printf(" %c ", respuesta[i]); // se imprime _ en el lugar de las letras
+			if (isblank(palabras[i]))
+			{
+				respuesta[i] = ' ';
+			}
+			else
+			{
+				respuesta[i] = '_';
+			}
+			printf(" %c ", respuesta[i]);
 		}
 
+		// se omite que el usuario ingrese espacios cuando sea el momento de ingresar caracteres
+		for (i = 0; i < longitud; i++)
+		{
+			if (isblank(respuesta[i]))
+			{
+				contador++;
+			}
+		}
+
+		// el propio juego en si
 		do
 		{
+			// se pide que se ingrese una letra para ver si se puede adivinar
 			fflush(stdin);
 			printf("\n\nIngrese una letra: ");
 			scanf("%c", &letra);
 			error = 0;
 
-			for (j = 0; j < longitud; j++)
+			for (i = 0; i < longitud; i++)
 			{
-				if (letra == palabra[j])
+				// la letra ingresada se compara a las letras de la palabra o frase a adivinar, sin importar mayusculas o minusculas
+				if (letra == toupper(palabras[i]) || letra == tolower(palabras[i]))
 				{
-					if (letra != respuesta[j])
+					if (letra != respuesta[i])
 					{
-						respuesta[j] = letra; // la susttituye por el *
+						respuesta[i] = letra; // sustituye el "_" por la letra correspondiente
 						contador++;			  // aumenta contador en uno
-						puntos = puntos + 10;
+						puntos = puntos + 10; // se suman puntos por adivinar letras correctamente
 					}
 				}
 				else
 				{
 					error++; // aumenta el error en uno
 				}
-				printf(" %c ", respuesta[j]); // imprimiendo la letra correcta
+				printf(" %c ", respuesta[i]); // se imprime el caracter final, sea la letra correcta o se queda como "_" si la letra es incorrecta
 			}
+
+			// entra si la letra advinada no es igual a ninguna opcion
 			if (error == longitud)
-			{		 // entra si la letra advinada no es igual a ninguna opcion
-				e++; // va aumentar segun la cantidad de errores
+			{
+				// aumenta el intento si la letra ingresada no es igual a ninguna de las letras de la palabra a adivinar, ademas se restan puntos
+				intentos++;
 				puntos = puntos - 5;
 			}
-			intento(e);
+			// se entra a la funcion intentos
+			intento(intentos);
+		} while (contador < longitud && intentos < 6);
+		// todo se repite mientras el numero de intentos fallidos no supere 6 y el contador de letras adivinadas sea menos al total de letras adivinadas
 
-		} while (contador < longitud && e < 6);
-
-		if (e == 6)
-		{ // cuando ya se cometen el numero maximo de errores
+		// cuando se comete el numero maximo de intentos, se imprime que el juego ha terminado
+		if (intentos == 6)
+		{
 			printf("\nGAME OVER :(\n");
 			if (puntos < 0)
 			{
-				// si los valores quedan negativos, no hay puntos
-				printf("Su puntaje es: 0\n"); 
+				// si los valores quedan negativos, no hay puntos y se imprime 0
+				printf("Su puntaje es: 0\n");
 				// se reinician los puntos
 				puntos = 0;
 			}
@@ -288,36 +314,40 @@ int juego(char palabras[])
 				printf("Su puntaje es: %d\n", puntos);
 				// se reinician los puntos
 				puntos = 0;
-			}		 
+			}
 
+			// se muestra la palabra correcta
 			printf("La palabra correcta era: ");
-			for (j = 0; j < longitud; j++)
+			for (i = 0; i < longitud; i++)
 			{
-				printf("%c", palabra[j]); // imprime la palabra
+				printf("%c", palabras[i]);
 			}
 		}
 
-		// entra si todas las letras ingresadas corresponden a la palabra o se cometieron menos de 6 errores
+		// entra si todas las letras ingresadas corresponden a la palabra y se cometieron menos de 6 errores
 		if (contador == longitud)
-		{ 
-			if (e == 0)
+		{
+			if (intentos == 0)
 			{ // si no se cometio ningun error
 				printf("\nFelicidades, Usted ha ganado sin cometer ningun error \n");
 				printf("Su puntaje es: %d", puntos);
 			}
 			else
-			{ // si los erroes fueron menores a los intentos puestos
-				printf("\nFelicidades, usted ha ganado, con %d intentos fallidos \n", e);
+			{ // si los intentos fallidos fueron menores a 6 pero mayores a 0
+				printf("\nFelicidades, usted ha ganado, con %d intentos fallidos \n", intentos);
 				printf("Su puntaje es: %d", puntos);
 			}
 		}
 
+		// despues de ganar o perder, se pregunta si se quiere volver a jugar
 		fflush(stdin);
 		printf("\n\nPresione ''S'' si desea volver a jugar o cualquier otra tecla si no es asi: ");
 		scanf("%s", &res);
 		fflush(stdin);
-	} while (res == 'S' || res == 's'); // si el caracter ingresado es S repite el juego
+	} while (res == 'S' || res == 's');
+	// si el caracter ingresado es S repite el juego
 
+	// se pregunta si se quiere volver al menu o salir
 	printf("\nPresione ''N'' para volver al menu, cualquier otra tecla para salir: ");
 	scanf("%s", &res1);
 	if (res1 == 'N' || res1 == 'n')
@@ -331,16 +361,16 @@ int juego(char palabras[])
 }
 
 // mostrar y guardar el puntaje
-void intento(int e)
+void intento(int intentos)
 {
 	int f = 0;
-	f = 6 - e;
+	f = 6 - intentos;
 	printf("Usted tiene %d oportunidades restantes.\n", f);
 }
 
 void tablaPosiciones(char nombrejugador[])
 {
-	//printf("Funcion tabla recibio el nombre %s\n", nombrejugador);
+	// printf("Funcion tabla recibio el nombre %s\n", nombrejugador);
 }
 
 // Funcion ingresar palabras
