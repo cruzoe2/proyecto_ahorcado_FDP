@@ -26,7 +26,7 @@ int main()
 
 	// llamando a menu
 	menu();
-
+	system("pause");
 	return 0;
 }
 
@@ -111,19 +111,26 @@ int juego()
 
 void nivelFacil()
 {
-	char palabras[50][50], respuesta[40], letra, res, res1;
+	char palabras[10][128], respuesta[40], letra, res, res1;
 	FILE *archivo;
 	int c, i = 0;
-	int longitud, conta, i, j, e, error;
+	int longitud, conta, j, e, error;
 
 	archivo = fopen("facil.txt", "r"); // abre el archivo en solo lectura
 
-	// toma las palabras linea a linea de el txt mientras que no sea End of File
-	while (c != EOF)
+	while(fgets(palabras[i], 128, archivo)) 
 	{
-		c = fscanf(archivo, "%s", palabras[i]); // guardando las palabras en un arreglo
-		i++;
-	}
+        palabras[i][strlen(palabras[i]) - 1] = '\0';
+        i++;
+    }
+	
+	// debug, se imprimen cada una de las posiciones del arreglo
+	for(conta=0; conta<i; conta++){
+    	printf("%s|",palabras[conta]);
+  	}
+
+	int n = rand()%i;
+	printf("\nLa palabra aleatoria es %s\n", palabras[n]);
 }
 
 // mostrar y guardar el puntaje
