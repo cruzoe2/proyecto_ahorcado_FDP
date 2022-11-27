@@ -12,11 +12,12 @@
 void menu();
 void carga();
 void nivelFacil();
-void nivelintermedio();
-void niveldificil();
+void nivelIntermedio();
+void nivelDificil();
 int ingresarPalabras();
 void tabla();
 int juego();
+int seleccionDif();
 void puntaje(int e);
 void gotoxy(short x, short y);
 
@@ -38,8 +39,8 @@ void menu()
 	do
 	{ // imprime el menu principal varias veces hasta que sea necesario
 		system("cls");
-		printf("\n\t\t\tJUEGO DEL AHORCADO \n\t\t\t");
-		printf("Seleccione una categoria \n");
+		printf("\n\t\t\t\tJUEGO DEL AHORCADO\t\t\t\t\n");
+		printf("\nSeleccione una categoria:\n");
 		printf("1.Jugar \n");
 		printf("2.Ingresar Palabras\n");
 		printf("3.Tabla de posiciones \n");
@@ -47,11 +48,12 @@ void menu()
 		printf("Ingrese opcion: ");
 		scanf("%c", &opcion);
 	} while (opcion < '1' || opcion > '4'); // evalua los datos ingresados por el usuario
+
 	switch (opcion)
 	{ // seleeciona el caso ingresado por el usuario
 	case '1':
-		juego();
-		break; // llamado a la funcion juego
+		seleccionDif();
+		break; // llamado a la funcion de seleccion de dificultad
 	case '2':
 		ingresarPalabras();
 		break; // ingresar palabras
@@ -64,8 +66,8 @@ void menu()
 	}
 }
 
-// FUNCION PRINCIPAL DEL JUEGO
-int juego()
+// Selector de dificultad
+int seleccionDif()
 {
 
 	// variables
@@ -78,13 +80,13 @@ int juego()
 	fflush(stdin);
 	gets(player);
 	system("cls");
-	printf("Bienvenido %s a nuestro juego", player);
 
 	do
 	{
 		system("cls");
-		printf("\n\t\t\t\tJUEGO DEL AHORCADO\n\t\t\t\t");
-		printf("SELECCIONE EL NIVEL DE DIFICULTAD CON EL DESEA JUGAR \n");
+		printf("Bienvenido %s a nuestro juego!\n\n", player);
+		printf("\n\t\t\t\tJUEGO DEL AHORCADO\t\t\t\t\n");
+		printf("\nSELECCIONE EL NIVEL DE DIFICULTAD CON EL DESEA JUGAR:\n");
 		printf("1. Nivel Facil \n");
 		printf("2. Nivel intermedio \n");
 		printf("3. Nivel Dificil \n");
@@ -98,10 +100,10 @@ int juego()
 		nivelFacil();
 		break;
 	case 2:
-
+		nivelIntermedio();
 		break;
 	case 3:
-
+		nivelDificil();
 		break;
 	case 4:
 		menu(); // regresando al menu
@@ -131,6 +133,60 @@ void nivelFacil()
 
 	int n = rand()%i;
 	printf("\nLa palabra aleatoria es %s\n", palabras[n]);
+
+
+}
+
+void nivelIntermedio()
+{
+	char palabras[10][128], respuesta[40], letra, res, res1;
+	FILE *archivo;
+	int c, i = 0;
+	int longitud, conta, j, e, error;
+
+	archivo = fopen("medio.txt", "r"); // abre el archivo en solo lectura
+
+	while(fgets(palabras[i], 128, archivo)) 
+	{
+        palabras[i][strlen(palabras[i]) - 1] = '\0';
+        i++;
+    }
+	
+	// debug, se imprimen cada una de las posiciones del arreglo
+	for(conta=0; conta<i; conta++){
+    	printf("%s|",palabras[conta]);
+  	}
+
+	int n = rand()%i;
+	printf("\nLa palabra aleatoria es %s\n", palabras[n]);
+
+
+}
+
+void nivelDificil()
+{
+	char palabras[10][128], respuesta[40], letra, res, res1;
+	FILE *archivo;
+	int c, i = 0;
+	int longitud, conta, j, e, error;
+
+	archivo = fopen("dificil.txt", "r"); // abre el archivo en solo lectura
+
+	while(fgets(palabras[i], 128, archivo)) 
+	{
+        palabras[i][strlen(palabras[i]) - 1] = '\0';
+        i++;
+    }
+	
+	// debug, se imprimen cada una de las posiciones del arreglo
+	for(conta=0; conta<i; conta++){
+    	printf("%s|",palabras[conta]);
+  	}
+
+	int n = rand()%i;
+	printf("\nLa palabra aleatoria es %s\n", palabras[n]);
+
+
 }
 
 // mostrar y guardar el puntaje
