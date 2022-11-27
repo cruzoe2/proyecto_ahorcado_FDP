@@ -10,15 +10,14 @@
 
 // Prototipo de funciones
 void menu();
-void carga();
+int seleccionDif();
 void nivelFacil();
 void nivelIntermedio();
 void nivelDificil();
-int ingresarPalabras();
-void tabla();
 int juego();
-int seleccionDif();
-void puntaje();
+void intento(int e);
+void tablaPosiciones();
+int ingresarPalabras();
 
 // FUNCION PRINCIPAL MAIN
 int main()
@@ -58,7 +57,7 @@ void menu()
 		// void tabla()
 		break; // llamado a la funcion tabla de posiciones
 	case '4':
-		printf("\n\nGracias por utilizar nuestro programa.....\n\n");
+		printf("\n\nGracias por jugar!\n\n");
 		break;
 	}
 }
@@ -66,7 +65,7 @@ void menu()
 // Selector de dificultad
 int seleccionDif()
 {
-
+	system("cls");
 	// variables
 	int op, length = 0;
 	char player[25]; // guardando nombre del usuario
@@ -127,6 +126,7 @@ int seleccionDif()
 
 void nivelFacil(char nombrejugador[])
 {
+	system("cls");
 	char palabras[10][128];
 	FILE *archivo;
 	int i = 0, conta;
@@ -138,18 +138,22 @@ void nivelFacil(char nombrejugador[])
 		i++;
 	}
 
-	// debug, se imprimen cada una de las posiciones del arreglo
-	for (conta = 0; conta < i; conta++)
-	{
-		printf("%s|", palabras[conta]);
-	}
-
+	// se da una semilla para el generador
+	srand(time(NULL));
 	int n = rand() % i;
-	printf("\nLa palabra aleatoria es %s\n", palabras[n]);
-	printf("El nombre es %s\n", nombrejugador);
+
+	// debug, se imprimen cada una de las posiciones del arreglo ademas de valores utiles
+		for (conta = 0; conta < i; conta++)
+		{
+			printf("%s|", palabras[conta]);
+		}
+	
+		printf("\nNumero aleatorio es %d\n", n);
+		printf("La palabra aleatoria es %s\n", palabras[n]);
+		printf("El nombre es %s\n", nombrejugador);
 
 	juego(palabras[n]); // mandando el valor a la funcion juego
-	puntaje(nombrejugador);
+	tablaPosiciones(nombrejugador);
 }
 
 void nivelIntermedio(char nombrejugador[])
@@ -171,12 +175,14 @@ void nivelIntermedio(char nombrejugador[])
 		printf("%s|", palabras[conta]);
 	}
 
+	// se da una semilla para el generador
+	srand(time(NULL));
 	int n = rand() % i;
 	printf("\nLa palabra aleatoria es %s\n", palabras[n]);
 	printf("El nombre es %s\n", nombrejugador);
 
 	juego(palabras[n]); // mandando el valor a la funcion juego
-	puntaje(nombrejugador);
+	tablaPosiciones(nombrejugador);
 }
 
 void nivelDificil(char nombrejugador[])
@@ -198,23 +204,137 @@ void nivelDificil(char nombrejugador[])
 		printf("%s|", palabras[conta]);
 	}
 
+	// se da una semilla para el generador
+	srand(time(NULL));
 	int n = rand() % i;
 	printf("\nLa palabra aleatoria es %s\n", palabras[n]);
 	printf("El nombre es %s\n", nombrejugador);
 
 	juego(palabras[n]); // mandando el valor a la funcion juego
-	puntaje(nombrejugador);
+	tablaPosiciones(nombrejugador);
 }
 
-int juego(char palabra[])
+int juego(char palabras[])
 {
-	printf("Funcion juego recibio la palabra %s\n", palabra);
+	int longitud, error, e, i, j, contador, puntos = 0;
+	char palabra[30], respuesta[30], letra, res, res1;
+
+	do
+	{
+		longitud = strlen(palabras);
+		e = 0; // contabilizador de errores inicia en 0
+		contador = 0;
+		strcpy(palabra, palabras);
+
+		for (i = 0; i < longitud; i++)
+		{
+			fflush(stdin);
+			respuesta[i] = '_';			  // se almacena _ en un vector
+			printf(" %c ", respuesta[i]); // se imprime _ en el lugar de las letras
+		}
+
+		do
+		{
+			fflush(stdin);
+			printf("\n\nIngrese una letra: ");
+			scanf("%c", &letra);
+			error = 0;
+
+			for (j = 0; j < longitud; j++)
+			{
+				if (letra == palabra[j])
+				{
+					if (letra != respuesta[j])
+					{
+						respuesta[j] = letra; // la susttituye por el *
+						contador++;			  // aumenta contador en uno
+						puntos = puntos + 10;
+					}
+				}
+				else
+				{
+					error++; // aumenta el error en uno
+				}
+				printf(" %c ", respuesta[j]); // imprimiendo la letra correcta
+			}
+			if (error == longitud)
+			{		 // entra si la letra advinada no es igual a ninguna opcion
+				e++; // va aumentar segun la cantidad de errores
+				puntos = puntos - 5;
+			}
+			intento(e);
+
+		} while (contador < longitud && e < 6);
+
+		if (e == 6)
+		{ // cuando ya se cometen el numero maximo de errores
+			printf("\nGAME OVER :(\n");
+			if (puntos < 0)
+			{
+				// si los valores quedan negativos, no hay puntos
+				printf("Su puntaje es: 0\n"); 
+				// se reinician los puntos
+				puntos = 0;
+			}
+			else
+			{
+				// Si a pesar de perder hay puntos, se muestran aqui
+				printf("Su puntaje es: %d\n", puntos);
+				// se reinician los puntos
+				puntos = 0;
+			}		 
+
+			printf("La palabra correcta era: ");
+			for (j = 0; j < longitud; j++)
+			{
+				printf("%c", palabra[j]); // imprime la palabra
+			}
+		}
+
+		// entra si todas las letras ingresadas corresponden a la palabra o se cometieron menos de 6 errores
+		if (contador == longitud)
+		{ 
+			if (e == 0)
+			{ // si no se cometio ningun error
+				printf("\nFelicidades, Usted ha ganado sin cometer ningun error \n");
+				printf("Su puntaje es: %d", puntos);
+			}
+			else
+			{ // si los erroes fueron menores a los intentos puestos
+				printf("\nFelicidades, usted ha ganado, con %d intentos fallidos \n", e);
+				printf("Su puntaje es: %d", puntos);
+			}
+		}
+
+		fflush(stdin);
+		printf("\n\nPresione ''S'' si desea volver a jugar o cualquier otra tecla si no es asi: ");
+		scanf("%s", &res);
+		fflush(stdin);
+	} while (res == 'S' || res == 's'); // si el caracter ingresado es S repite el juego
+
+	printf("\nPresione ''N'' para volver al menu, cualquier otra tecla para salir: ");
+	scanf("%s", &res1);
+	if (res1 == 'N' || res1 == 'n')
+	{ // si el caracter ingresado es N regresara al menu
+		menu();
+	}
+	else
+	{
+		printf("\nGracias por jugar!\n");
+	}
 }
 
 // mostrar y guardar el puntaje
-void puntaje(char nombrejugador[])
+void intento(int e)
 {
-	printf("Funcion puntaje recibio el nombre %s\n", nombrejugador);
+	int f = 0;
+	f = 6 - e;
+	printf("Usted tiene %d oportunidades restantes.\n", f);
+}
+
+void tablaPosiciones(char nombrejugador[])
+{
+	//printf("Funcion tabla recibio el nombre %s\n", nombrejugador);
 }
 
 // Funcion ingresar palabras
