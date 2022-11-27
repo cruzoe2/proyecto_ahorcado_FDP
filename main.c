@@ -127,12 +127,12 @@ int seleccionDif()
 void nivelFacil(char nombrejugador[])
 {
 	system("cls");
-	char palabras[10][128];
-	FILE *archivo;
+	char palabras[1000][1000];
+	FILE *facil;
 	int i = 0, conta;
-	archivo = fopen("facil.txt", "r"); // abre el archivo en solo lectura
+	facil = fopen("facil.txt", "r"); // abre el archivo en solo lectura
 
-	while (fgets(palabras[i], 128, archivo))
+	while (fgets(palabras[i], 1000, facil))
 	{
 		palabras[i][strlen(palabras[i]) - 1] = '\0';
 		i++;
@@ -158,28 +158,31 @@ void nivelFacil(char nombrejugador[])
 
 void nivelIntermedio(char nombrejugador[])
 {
-	char palabras[10][128];
-	FILE *archivo;
+	system("cls");
+	char palabras[1000][1000];
+	FILE *medio;
 	int i = 0, conta;
-	archivo = fopen("medio.txt", "r"); // abre el archivo en solo lectura
+	medio = fopen("medio.txt", "r"); // abre el archivo en solo lectura
 
-	while (fgets(palabras[i], 128, archivo))
+	while (fgets(palabras[i], 1000, medio))
 	{
 		palabras[i][strlen(palabras[i]) - 1] = '\0';
 		i++;
 	}
 
-	// debug, se imprimen cada una de las posiciones del arreglo
-	for (conta = 0; conta < i; conta++)
-	{
-		printf("%s|", palabras[conta]);
-	}
-
 	// se da una semilla para el generador
 	srand(time(NULL));
 	int n = rand() % i;
-	printf("\nLa palabra aleatoria es %s\n", palabras[n]);
-	printf("El nombre es %s\n", nombrejugador);
+
+	// debug, se imprimen cada una de las posiciones del arreglo ademas de valores utiles
+		for (conta = 0; conta < i; conta++)
+		{
+			printf("%s|", palabras[conta]);
+		}
+	
+		printf("\nNumero aleatorio es %d\n", n);
+		printf("La palabra aleatoria es %s\n", palabras[n]);
+		printf("El nombre es %s\n", nombrejugador);
 
 	juego(palabras[n]); // mandando el valor a la funcion juego
 	tablaPosiciones(nombrejugador);
@@ -187,28 +190,31 @@ void nivelIntermedio(char nombrejugador[])
 
 void nivelDificil(char nombrejugador[])
 {
-	char palabras[10][128];
-	FILE *archivo;
+	system("cls");
+	char palabras[1000][1000];
+	FILE *dificil;
 	int i = 0, conta;
-	archivo = fopen("dificil.txt", "r"); // abre el archivo en solo lectura
+	dificil = fopen("dificil.txt", "r"); // abre el archivo en solo lectura
 
-	while (fgets(palabras[i], 128, archivo))
+	while (fgets(palabras[i], 1000, dificil))
 	{
 		palabras[i][strlen(palabras[i]) - 1] = '\0';
 		i++;
 	}
 
-	// debug, se imprimen cada una de las posiciones del arreglo
-	for (conta = 0; conta < i; conta++)
-	{
-		printf("%s|", palabras[conta]);
-	}
-
 	// se da una semilla para el generador
 	srand(time(NULL));
 	int n = rand() % i;
-	printf("\nLa palabra aleatoria es %s\n", palabras[n]);
-	printf("El nombre es %s\n", nombrejugador);
+
+	// debug, se imprimen cada una de las posiciones del arreglo ademas de valores utiles
+		for (conta = 0; conta < i; conta++)
+		{
+			printf("%s|", palabras[conta]);
+		}
+	
+		printf("\nNumero aleatorio es %d\n", n);
+		printf("La palabra aleatoria es %s\n", palabras[n]);
+		printf("El nombre es %s\n", nombrejugador);
 
 	juego(palabras[n]); // mandando el valor a la funcion juego
 	tablaPosiciones(nombrejugador);
