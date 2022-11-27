@@ -18,13 +18,11 @@ int ingresarPalabras();
 void tabla();
 int juego();
 int seleccionDif();
-void puntaje(int e);
-void gotoxy(short x, short y);
+void puntaje();
 
 // FUNCION PRINCIPAL MAIN
 int main()
 {
-
 	// llamando a menu
 	menu();
 	system("pause");
@@ -32,7 +30,6 @@ int main()
 }
 
 // FUNCION DEL MENU seleccionada
-
 void menu()
 {
 	char opcion;
@@ -71,7 +68,7 @@ int seleccionDif()
 {
 
 	// variables
-	int op;
+	int op, length = 0;
 	char player[25]; // guardando nombre del usuario
 
 	// inicio del juego y obteniedo nombre del usuario
@@ -80,6 +77,22 @@ int seleccionDif()
 	fflush(stdin);
 	gets(player);
 	system("cls");
+
+	// este es un bucle que permite verificar la longitud del nombre
+	while (player[length] != '\0')
+	{
+		length++;
+	}
+
+	// estas tres lineas mueven la palabra del array "player" al array "nombrejugador", el cual tiene la longitud exacta de la palabra o frase utilizada
+	// esto se realiza para que no hayan grandes espacios despues del nombre que el usuario escribio en el documento de texto
+	char nombrejugador[length];
+	strncpy(nombrejugador, player, length);
+	nombrejugador[length] = '\0';
+
+	// depuracion para saber si es correcta la longitud del string final
+	// printf("La longitud del nombre es %d\n\n", strlen(nombrejugador));
+	// system("pause");
 
 	do
 	{
@@ -91,19 +104,20 @@ int seleccionDif()
 		printf("2. Nivel intermedio \n");
 		printf("3. Nivel Dificil \n");
 		printf("4. Regresar al menu principal \n");
+		printf("Ingrese opcion: ");
 		scanf("%d", &op);
 	} while (op < 1 || op > 4);
 
 	switch (op)
 	{
 	case 1:
-		nivelFacil();
+		nivelFacil(nombrejugador);
 		break;
 	case 2:
-		nivelIntermedio();
+		nivelIntermedio(nombrejugador);
 		break;
 	case 3:
-		nivelDificil();
+		nivelDificil(nombrejugador);
 		break;
 	case 4:
 		menu(); // regresando al menu
@@ -111,91 +125,96 @@ int seleccionDif()
 	}
 }
 
-void nivelFacil()
+void nivelFacil(char nombrejugador[])
 {
-	char palabras[10][128], respuesta[40], letra, res, res1;
+	char palabras[10][128];
 	FILE *archivo;
-	int c, i = 0;
-	int longitud, conta, j, e, error;
-
+	int i = 0, conta;
 	archivo = fopen("facil.txt", "r"); // abre el archivo en solo lectura
 
-	while(fgets(palabras[i], 128, archivo)) 
+	while (fgets(palabras[i], 128, archivo))
 	{
-        palabras[i][strlen(palabras[i]) - 1] = '\0';
-        i++;
-    }
-	
+		palabras[i][strlen(palabras[i]) - 1] = '\0';
+		i++;
+	}
+
 	// debug, se imprimen cada una de las posiciones del arreglo
-	for(conta=0; conta<i; conta++){
-    	printf("%s|",palabras[conta]);
-  	}
+	for (conta = 0; conta < i; conta++)
+	{
+		printf("%s|", palabras[conta]);
+	}
 
-	int n = rand()%i;
+	int n = rand() % i;
 	printf("\nLa palabra aleatoria es %s\n", palabras[n]);
+	printf("El nombre es %s\n", nombrejugador);
 
-
+	juego(palabras[n]); // mandando el valor a la funcion juego
+	puntaje(nombrejugador);
 }
 
-void nivelIntermedio()
+void nivelIntermedio(char nombrejugador[])
 {
-	char palabras[10][128], respuesta[40], letra, res, res1;
+	char palabras[10][128];
 	FILE *archivo;
-	int c, i = 0;
-	int longitud, conta, j, e, error;
-
+	int i = 0, conta;
 	archivo = fopen("medio.txt", "r"); // abre el archivo en solo lectura
 
-	while(fgets(palabras[i], 128, archivo)) 
+	while (fgets(palabras[i], 128, archivo))
 	{
-        palabras[i][strlen(palabras[i]) - 1] = '\0';
-        i++;
-    }
-	
+		palabras[i][strlen(palabras[i]) - 1] = '\0';
+		i++;
+	}
+
 	// debug, se imprimen cada una de las posiciones del arreglo
-	for(conta=0; conta<i; conta++){
-    	printf("%s|",palabras[conta]);
-  	}
+	for (conta = 0; conta < i; conta++)
+	{
+		printf("%s|", palabras[conta]);
+	}
 
-	int n = rand()%i;
+	int n = rand() % i;
 	printf("\nLa palabra aleatoria es %s\n", palabras[n]);
+	printf("El nombre es %s\n", nombrejugador);
 
-
+	juego(palabras[n]); // mandando el valor a la funcion juego
+	puntaje(nombrejugador);
 }
 
-void nivelDificil()
+void nivelDificil(char nombrejugador[])
 {
-	char palabras[10][128], respuesta[40], letra, res, res1;
+	char palabras[10][128];
 	FILE *archivo;
-	int c, i = 0;
-	int longitud, conta, j, e, error;
-
+	int i = 0, conta;
 	archivo = fopen("dificil.txt", "r"); // abre el archivo en solo lectura
 
-	while(fgets(palabras[i], 128, archivo)) 
+	while (fgets(palabras[i], 128, archivo))
 	{
-        palabras[i][strlen(palabras[i]) - 1] = '\0';
-        i++;
-    }
-	
+		palabras[i][strlen(palabras[i]) - 1] = '\0';
+		i++;
+	}
+
 	// debug, se imprimen cada una de las posiciones del arreglo
-	for(conta=0; conta<i; conta++){
-    	printf("%s|",palabras[conta]);
-  	}
+	for (conta = 0; conta < i; conta++)
+	{
+		printf("%s|", palabras[conta]);
+	}
 
-	int n = rand()%i;
+	int n = rand() % i;
 	printf("\nLa palabra aleatoria es %s\n", palabras[n]);
+	printf("El nombre es %s\n", nombrejugador);
 
+	juego(palabras[n]); // mandando el valor a la funcion juego
+	puntaje(nombrejugador);
+}
 
+int juego(char palabra[])
+{
+	printf("Funcion juego recibio la palabra %s\n", palabra);
 }
 
 // mostrar y guardar el puntaje
-void puntaje(int e)
+void puntaje(char nombrejugador[])
 {
-	int f = 0;
-	f = 20 - e;
-
-	printf("Usted tiene %d oportunidades restantes. ", f);
+	printf("Funcion puntaje recibio el nombre %s\n", nombrejugador);
 }
 
 // Funcion ingresar palabras
