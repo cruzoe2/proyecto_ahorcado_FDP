@@ -69,7 +69,7 @@ int seleccionDif()
 	system("cls");
 	// variables
 	int op, length = 0, puntos = 0;
-	char player[25]; // guardando nombre del usuario
+	char player[100]; // guardando nombre del usuario
 
 	// inicio del juego y obteniedo nombre del usuario
 	printf("\n\t\t\t\tJUEGO DEL AHORCADO\n\t\t\t\t");
@@ -139,7 +139,7 @@ void nivelFacil(char nombrejugador[], int diff, int puntos)
 		i++;
 	}
 
-	// se da una semilla para el generador
+	// se da una semilla para el generador y se genera un numero aleatorio
 	srand(time(NULL));
 	int n = rand() % i;
 
@@ -148,7 +148,6 @@ void nivelFacil(char nombrejugador[], int diff, int puntos)
 	{
 		printf("%s|", palabras[conta]);
 	}
-
 	printf("\nNumero aleatorio es %d\n", n);
 	printf("La palabra aleatoria es %s\n", palabras[n]);
 	printf("El nombre es %s\n", nombrejugador);
@@ -224,9 +223,11 @@ void nivelDificil(char nombrejugador[], int diff, int puntos)
 int juego(char palabras[], char nombrejugador[], int diff, int puntos)
 {
 	// se declaran variables de uso interno y el array de la palabra a utilizar, ademas de las letras que el usuario ingrese
-	int longitud, error, intentos = 0, i, contador = 0;
+	int longitud = 0, error, intentos = 0, i, contador = 0;
 	char respuesta[100], letra, res, res1;
 
+	do
+	{
 		// se calcula la longitud de la respuesta
 		longitud = strlen(palabras);
 		intentos = 0; // contabilizador de intentos fallidos inicia en 0
@@ -344,10 +345,8 @@ int juego(char palabras[], char nombrejugador[], int diff, int puntos)
 		scanf("%s", &res);
 		fflush(stdin);
 
-		if (res == 'S' || res == 's')
-		{
-			dificultad(nombrejugador, diff, puntos);
-		}
+		dificultad(nombrejugador, diff, puntos); //ERROR
+	} while (res == 'S' || res == 's');
 	// si el caracter ingresado es S repite el juego
 
 	// se pregunta si se quiere volver al menu o salir
@@ -363,19 +362,17 @@ int juego(char palabras[], char nombrejugador[], int diff, int puntos)
 	}
 }
 
+// ESTA CAUSANDO ERROR
 int dificultad(char nombrejugador[], int diff, int puntos)
 {
 	switch (diff)
 	{
-		case 1:
+	case 1:
 		nivelFacil(nombrejugador, diff, puntos);
-		break;
-		case 2:
-		nivelIntermedio(nombrejugador, diff, puntos);
-		break;
-		case 3:
+	case 2:
+		nivelIntermedio(nombrejugador, diff, puntos);	
+	case 3:
 		nivelDificil(nombrejugador, diff, puntos);
-		break;
 	}
 }
 
