@@ -1,3 +1,5 @@
+// QUITAR LA PALABRA QUE HAY QUE ADIVINAR CUANDO SE FINALICE TODO
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,18 +8,18 @@
 #include <windows.h>
 #include <math.h>
 #include <ctype.h>
-#define LONGITUD_MAXIMA_CADENA 1000
 
 // Prototipo de funciones
 void menu();
-int seleccionDif();
-void nivelFacil();
-void nivelIntermedio();
-void nivelDificil();
+void seleccionDif();
+void nivelFacil(char nombrejugador[], int diff, int puntos);
+void nivelIntermedio(char nombrejugador[], int diff, int puntos);
+void nivelDificil(char nombrejugador[], int diff, int puntos);
 int juego();
 void intento(int e);
 void tablaPosiciones();
 int ingresarPalabras();
+void dificultad(char nombrejugador[], int diff, int puntos);
 
 // FUNCION PRINCIPAL MAIN
 int main()
@@ -35,7 +37,7 @@ void menu()
 	do
 	{ // imprime el menu principal varias veces hasta que sea necesario
 		system("cls");
-		printf("\n\t\t\t\tJUEGO DEL AHORCADO\t\t\t\t\n");
+		printf("\n\t\t\t\tJUEGO DEL AHORCADO\n");
 		printf("\nSeleccione una categoria:\n");
 		printf("1.Jugar \n");
 		printf("2.Ingresar Palabras\n");
@@ -63,15 +65,15 @@ void menu()
 }
 
 // Selector de dificultad
-int seleccionDif()
+void seleccionDif()
 {
 	system("cls");
 	// variables
-	int op, length = 0;
-	char player[25]; // guardando nombre del usuario
+	int op, length = 0, puntos = 0;
+	char player[100]; // guardando nombre del usuario
 
 	// inicio del juego y obteniedo nombre del usuario
-	printf("\n\t\t\t\tJUEGO DEL AHORCADO\n\t\t\t\t");
+	printf("\n\t\t\t\tJUEGO DEL AHORCADO\n");
 	printf("\nIngrese su nombre: ");
 	fflush(stdin);
 	gets(player);
@@ -96,11 +98,11 @@ int seleccionDif()
 	do
 	{
 		system("cls");
-		printf("Bienvenido %s a nuestro juego!\n\n", player);
-		printf("\n\t\t\t\tJUEGO DEL AHORCADO\t\t\t\t\n");
+		printf("%s, bienvenido a nuestro juego!\n\n", player);
+		printf("\n\t\t\t\tJUEGO DEL AHORCADO\n");
 		printf("\nSELECCIONE EL NIVEL DE DIFICULTAD CON EL DESEA JUGAR:\n");
 		printf("1. Nivel Facil \n");
-		printf("2. Nivel intermedio \n");
+		printf("2. Nivel Intermedio \n");
 		printf("3. Nivel Dificil \n");
 		printf("4. Regresar al menu principal \n");
 		printf("Ingrese opcion: ");
@@ -110,13 +112,13 @@ int seleccionDif()
 	switch (op)
 	{
 	case 1:
-		nivelFacil(nombrejugador);
+		nivelFacil(nombrejugador, op, puntos);
 		break;
 	case 2:
-		nivelIntermedio(nombrejugador);
+		nivelIntermedio(nombrejugador, op, puntos);
 		break;
 	case 3:
-		nivelDificil(nombrejugador);
+		nivelDificil(nombrejugador, op, puntos);
 		break;
 	case 4:
 		menu(); // regresando al menu
@@ -124,108 +126,107 @@ int seleccionDif()
 	}
 }
 
-void nivelFacil(char nombrejugador[])
+void nivelFacil(char nombrejugador[], int diff, int puntos)
 {
 	system("cls");
-	char palabras[1000][1000];
+	char palabras[100][100];
 	FILE *facil;
-	int i = 0, conta;
+	int i = 0, conta = 0;
 	facil = fopen("facil.txt", "r"); // abre el archivo en solo lectura
 
-	while (fgets(palabras[i], 1000, facil))
+	while (fgets(palabras[i], 100, facil))
 	{
 		palabras[i][strlen(palabras[i]) - 1] = '\0';
 		i++;
 	}
 
-	// se da una semilla para el generador
+	fclose(facil);
+
+	// se da una semilla para el generador y se genera un numero aleatorio
 	srand(time(NULL));
 	int n = rand() % i;
 
 	// debug, se imprimen cada una de las posiciones del arreglo ademas de valores utiles
-	for (conta = 0; conta < i; conta++)
-	{
-		printf("%s|", palabras[conta]);
-	}
-
-	printf("\nNumero aleatorio es %d\n", n);
+	// for (conta = 0; conta < i; conta++)
+	//{
+	//	printf("%s|", palabras[conta]);
+	//}
+	// printf("\nNumero aleatorio es %d\n", n);
 	printf("La palabra aleatoria es %s\n", palabras[n]);
-	printf("El nombre es %s\n", nombrejugador);
+	// printf("El nombre es %s\n", nombrejugador);
 
-	juego(palabras[n]); // mandando el valor a la funcion juego
-	tablaPosiciones(nombrejugador);
+	juego(palabras[n], nombrejugador, diff, puntos); // mandando el valor a la funcion juego
 }
 
-void nivelIntermedio(char nombrejugador[])
+void nivelIntermedio(char nombrejugador[], int diff, int puntos)
 {
 	system("cls");
-	char palabras[1000][1000];
-	FILE *medio;
-	int i = 0, conta;
-	medio = fopen("medio.txt", "r"); // abre el archivo en solo lectura
+	char palabras[100][100];
+	FILE *facil;
+	int i = 0, conta = 0;
+	facil = fopen("medio.txt", "r"); // abre el archivo en solo lectura
 
-	while (fgets(palabras[i], 1000, medio))
+	while (fgets(palabras[i], 100, facil))
 	{
 		palabras[i][strlen(palabras[i]) - 1] = '\0';
 		i++;
 	}
 
-	// se da una semilla para el generador
+	fclose(facil);
+
+	// se da una semilla para el generador y se genera un numero aleatorio
 	srand(time(NULL));
 	int n = rand() % i;
 
 	// debug, se imprimen cada una de las posiciones del arreglo ademas de valores utiles
-	for (conta = 0; conta < i; conta++)
-	{
-		printf("%s|", palabras[conta]);
-	}
-
-	printf("\nNumero aleatorio es %d\n", n);
+	// for (conta = 0; conta < i; conta++)
+	//{
+	//	printf("%s|", palabras[conta]);
+	//}
+	// printf("\nNumero aleatorio es %d\n", n);
 	printf("La palabra aleatoria es %s\n", palabras[n]);
-	printf("El nombre es %s\n", nombrejugador);
+	// printf("El nombre es %s\n", nombrejugador);
 
-	juego(palabras[n]); // mandando el valor a la funcion juego
-	tablaPosiciones(nombrejugador);
+	juego(palabras[n], nombrejugador, diff, puntos); // mandando el valor a la funcion juego
 }
 
-void nivelDificil(char nombrejugador[])
+void nivelDificil(char nombrejugador[], int diff, int puntos)
 {
 	system("cls");
-	char palabras[1000][1000];
-	FILE *dificil;
-	int i = 0, conta;
-	dificil = fopen("dificil.txt", "r"); // abre el archivo en solo lectura
+	char palabras[100][100];
+	FILE *facil;
+	int i = 0, conta = 0;
+	facil = fopen("dificil.txt", "r"); // abre el archivo en solo lectura
 
-	while (fgets(palabras[i], 1000, dificil))
+	while (fgets(palabras[i], 100, facil))
 	{
 		palabras[i][strlen(palabras[i]) - 1] = '\0';
 		i++;
 	}
 
-	// se da una semilla para el generador
+	fclose(facil);
+
+	// se da una semilla para el generador y se genera un numero aleatorio
 	srand(time(NULL));
 	int n = rand() % i;
 
 	// debug, se imprimen cada una de las posiciones del arreglo ademas de valores utiles
-	for (conta = 0; conta < i; conta++)
-	{
-		printf("%s|", palabras[conta]);
-	}
-
-	printf("\nNumero aleatorio es %d\n", n);
+	// for (conta = 0; conta < i; conta++)
+	//{
+	//	printf("%s|", palabras[conta]);
+	//}
+	// printf("\nNumero aleatorio es %d\n", n);
 	printf("La palabra aleatoria es %s\n", palabras[n]);
-	printf("El nombre es %s\n", nombrejugador);
+	// printf("El nombre es %s\n", nombrejugador);
 
-	juego(palabras[n]); // mandando el valor a la funcion juego
-	tablaPosiciones(nombrejugador);
+	juego(palabras[n], nombrejugador, diff, puntos); // mandando el valor a la funcion juego
 }
 
-int juego(char palabras[])
+int juego(char palabras[], char nombrejugador[], int diff, int puntos)
 {
 	// se declaran variables de uso interno y el array de la palabra a utilizar, ademas de las letras que el usuario ingrese
-	int longitud, error, intentos=0, i, contador=0, puntos = 0;
+	int longitud = 0, error = 0, intentos = 0, i = 0, contador = 0;
 	char respuesta[100], letra, res, res1;
-
 	do
 	{
 		// se calcula la longitud de la respuesta
@@ -264,6 +265,7 @@ int juego(char palabras[])
 			fflush(stdin);
 			printf("\n\nIngrese una letra: ");
 			scanf("%c", &letra);
+			system("cls");
 			error = 0;
 
 			for (i = 0; i < longitud; i++)
@@ -344,6 +346,12 @@ int juego(char palabras[])
 		printf("\n\nPresione ''S'' si desea volver a jugar o cualquier otra tecla si no es asi: ");
 		scanf("%s", &res);
 		fflush(stdin);
+
+		if (res == 'S' || res == 's')
+		{
+			// system("cls");
+			dificultad(nombrejugador, diff, puntos);
+		}
 	} while (res == 'S' || res == 's');
 	// si el caracter ingresado es S repite el juego
 
@@ -357,6 +365,25 @@ int juego(char palabras[])
 	else
 	{
 		printf("\nGracias por jugar!\n");
+		system("pause");
+		exit(0);
+	}
+}
+
+void dificultad(char nombrejugador[], int diff, int puntos)
+{
+	fflush(stdin);
+	switch (diff)
+	{
+	case 1:
+		nivelFacil(nombrejugador, diff, puntos);
+		break;
+	case 2:
+		nivelIntermedio(nombrejugador, diff, puntos);
+		break;
+	case 3:
+		nivelDificil(nombrejugador, diff, puntos);
+		break;
 	}
 }
 
@@ -365,7 +392,7 @@ void intento(int intentos)
 {
 	int f = 0;
 	f = 6 - intentos;
-	printf("Usted tiene %d oportunidades restantes.\n", f);
+	printf("\nUsted tiene %d oportunidades restantes.\n", f);
 }
 
 void tablaPosiciones(char nombrejugador[])
@@ -416,6 +443,7 @@ int ingresarPalabras()
 			nonchar = 1;
 
 			// se le pide al usuario ingresar una palabra o frase y se guarda en el array "str"
+			system("cls");
 			printf("\nIngrese palabras o frases para incluirlas en el juego, minimo 6 espacios, o ingrese 1 para regresar al menu principal:\n");
 			fgets(str, sizeof(str), stdin);
 
@@ -441,6 +469,7 @@ int ingresarPalabras()
 			if (length < 6)
 			{
 				printf("\nPor favor ingrese una palabra o frase con al menos 6 espacios\n");
+				system("pause");
 			}
 
 			// luego, para cada caracter de lo ingresado, se verifica que sean solo letras o espacios, sino se suma uno a nonchar cada vez que se detecta un caracter extraño
@@ -465,6 +494,7 @@ int ingresarPalabras()
 			if (nonchar > 0)
 			{
 				printf("\nPor favor ingrese una palabra o frase sin numeros o caracteres especiales\n");
+				system("pause");
 			}
 
 			// si se encuentran espacios al inicio o al final de la frase o palabra, se imprime un mensaje de informacion y se reinicia el loop
@@ -473,6 +503,7 @@ int ingresarPalabras()
 			{
 				space = 1;
 				printf("\nPor favor ingrese una palabra o frase sin espacios al inicio o al final\n");
+				system("pause");
 			}
 			else
 			{
@@ -512,6 +543,7 @@ int ingresarPalabras()
 		// este loop sirve para que el usuario seleccione entre agregar una nueva palabra y regresar al menu principal
 		while (nueva != 1)
 		{
+			nueva = 0;
 			printf("\nEscriba 1 para ingresar una nueva palabra y 2 para regresar al menu principal: ");
 			scanf("%d", &nueva);
 
@@ -523,6 +555,7 @@ int ingresarPalabras()
 				fclose(mid);
 				fclose(hard);
 				menu();
+				return 1;
 			}
 			// si se selecciona cualquier otro numero, se pide al usuario ingresar o 1 o 2
 			else if (nueva != 2 && nueva != 1)
