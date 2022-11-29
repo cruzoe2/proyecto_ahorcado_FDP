@@ -70,7 +70,7 @@ int main()
         // se tiene que restar uno a nonchar ya que el valor inicial de la variable es 1, y el programa pide que se repita mientras sea superior a 0
         nonchar--;
 
-        // lineas de depuracion para saber el valor de nonchar y length
+        // lineas de sepuracion para saber el valor de nonchar y length
         // printf("\nnonchar es %d\n", nonchar);
         // printf("length es %d\n\n", length);
 
