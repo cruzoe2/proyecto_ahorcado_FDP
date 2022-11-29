@@ -1,5 +1,3 @@
-// QUITAR LA PALABRA QUE HAY QUE ADIVINAR CUANDO SE FINALICE TODO
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -80,11 +78,12 @@ void menu()
 		seleccionDif(nombrejugador);
 		break; // llamado a la funcion de seleccion de dificultad
 	case '2':
+		fflush(stdin);
 		ingresarPalabras();
 		break; // llamado a la funcion ingresar palabras
 	case '3':
 		tablaPosiciones(nombrejugador, diff, puntos, select);
-		break; // llamado a la funcion tabla de posiciones
+		break; // se llama a la funcion tabla posiciones con select igual a 0
 	case '4':
 		printf("\n\nGracias por jugar!\n\n");
 		break;
@@ -99,13 +98,13 @@ void seleccionDif(char nombrejugador[])
 	int op, length = 0, puntos = 0;
 
 	do
-	{
+	{ // imprime el menu hasta que sea necesario
 		system("cls");
 		printf("\n\t\t\t\tJUEGO DEL AHORCADO\n");
 		printf("\nSELECCIONE EL NIVEL DE DIFICULTAD CON EL DESEA JUGAR:\n");
-		printf("1. Nivel Facil \n");
-		printf("2. Nivel Intermedio \n");
-		printf("3. Nivel Dificil \n");
+		printf("1. Nivel Facil (6+ caracteres)\n");
+		printf("2. Nivel Intermedio (12+ caracteres)\n");
+		printf("3. Nivel Dificil (20+ caracteres)\n");
 		printf("4. Regresar al menu principal \n");
 		printf("Ingrese opcion: ");
 		scanf("%d", &op);
@@ -114,34 +113,41 @@ void seleccionDif(char nombrejugador[])
 	switch (op)
 	{
 	case 1:
+		// llamada a funcion de dificultad facil
 		nivelFacil(nombrejugador, op, puntos);
 		break;
 	case 2:
+		// llamada a funcion de dificultad intermedia
 		nivelIntermedio(nombrejugador, op, puntos);
 		break;
 	case 3:
+		// llamada a funcion de dificultad dificil
 		nivelDificil(nombrejugador, op, puntos);
 		break;
 	case 4:
-		menu(); // regresando al menu
+		// llamada a funcion menu
+		menu();
 		break;
 	}
 }
 
 void nivelFacil(char nombrejugador[], int diff, int puntos)
 {
+	// declaracion de variables, un array de palabras y se abre el documento de texto
 	system("cls");
 	char palabras[100][100];
 	FILE *facil;
 	int i = 0, conta = 0;
 	facil = fopen("facil.txt", "r"); // abre el archivo en solo lectura
 
+	// loop que permite que todas las palabras del documento ingresen al array de palabras
 	while (fgets(palabras[i], 100, facil))
 	{
 		palabras[i][strlen(palabras[i]) - 1] = '\0';
 		i++;
 	}
 
+	// se cierra el documento
 	fclose(facil);
 
 	// se da una semilla para el generador y se genera un numero aleatorio
@@ -154,7 +160,7 @@ void nivelFacil(char nombrejugador[], int diff, int puntos)
 	//	printf("%s|", palabras[conta]);
 	//}
 	// printf("\nNumero aleatorio es %d\n", n);
-	printf("La palabra aleatoria es %s\n", palabras[n]);
+	//printf("La palabra aleatoria es %s\n", palabras[n]);
 	// printf("El nombre es %s\n", nombrejugador);
 
 	juego(palabras[n], nombrejugador, diff, puntos); // mandando el valor a la funcion juego
@@ -162,18 +168,21 @@ void nivelFacil(char nombrejugador[], int diff, int puntos)
 
 void nivelIntermedio(char nombrejugador[], int diff, int puntos)
 {
+	// declaracion de variables, un array de palabras y se abre el documento de texto
 	system("cls");
 	char palabras[100][100];
 	FILE *facil;
 	int i = 0, conta = 0;
 	facil = fopen("medio.txt", "r"); // abre el archivo en solo lectura
 
+	// loop que permite que todas las palabras del documento ingresen al array de palabras
 	while (fgets(palabras[i], 100, facil))
 	{
 		palabras[i][strlen(palabras[i]) - 1] = '\0';
 		i++;
 	}
 
+	// se cierra el documento
 	fclose(facil);
 
 	// se da una semilla para el generador y se genera un numero aleatorio
@@ -186,7 +195,7 @@ void nivelIntermedio(char nombrejugador[], int diff, int puntos)
 	//	printf("%s|", palabras[conta]);
 	//}
 	// printf("\nNumero aleatorio es %d\n", n);
-	printf("La palabra aleatoria es %s\n", palabras[n]);
+	// printf("La palabra aleatoria es %s\n", palabras[n]);
 	// printf("El nombre es %s\n", nombrejugador);
 
 	juego(palabras[n], nombrejugador, diff, puntos); // mandando el valor a la funcion juego
@@ -194,18 +203,21 @@ void nivelIntermedio(char nombrejugador[], int diff, int puntos)
 
 void nivelDificil(char nombrejugador[], int diff, int puntos)
 {
+	// declaracion de variables, un array de palabras y se abre el documento de texto
 	system("cls");
 	char palabras[100][100];
 	FILE *facil;
 	int i = 0, conta = 0;
 	facil = fopen("dificil.txt", "r"); // abre el archivo en solo lectura
 
+	// loop que permite que todas las palabras del documento ingresen al array de palabras
 	while (fgets(palabras[i], 100, facil))
 	{
 		palabras[i][strlen(palabras[i]) - 1] = '\0';
 		i++;
 	}
 
+	// se cierra el documento
 	fclose(facil);
 
 	// se da una semilla para el generador y se genera un numero aleatorio
@@ -218,7 +230,7 @@ void nivelDificil(char nombrejugador[], int diff, int puntos)
 	//	printf("%s|", palabras[conta]);
 	//}
 	// printf("\nNumero aleatorio es %d\n", n);
-	printf("La palabra aleatoria es %s\n", palabras[n]);
+	// printf("La palabra aleatoria es %s\n", palabras[n]);
 	// printf("El nombre es %s\n", nombrejugador);
 
 	juego(palabras[n], nombrejugador, diff, puntos); // mandando el valor a la funcion juego
@@ -305,7 +317,7 @@ int juego(char palabras[], char nombrejugador[], int diff, int puntos)
 		if (intentos == 6)
 		{
 			printf("\nGAME OVER :(\n");
-			tablaPosiciones(nombrejugador, diff, puntos, select);
+			tablaPosiciones(nombrejugador, diff, puntos, select); // se llama a la funcion tabla posiciones con select igual a 1
 			if (puntos < 0)
 			{
 				// si los valores quedan negativos, no hay puntos y se imprime 0
@@ -325,7 +337,7 @@ int juego(char palabras[], char nombrejugador[], int diff, int puntos)
 			printf("La palabra correcta era: ");
 			for (i = 0; i < longitud; i++)
 			{
-				printf("%c", palabras[i]);
+				printf("%c", palabras[i]); // se imprime el valor del parametro que tenia la funcion jugar
 			}
 		}
 
@@ -350,14 +362,16 @@ int juego(char palabras[], char nombrejugador[], int diff, int puntos)
 		scanf("%s", &res);
 		fflush(stdin);
 
+		// este if es por si el jugador quiere jugar de nuevo, los puntos se acumulan mientras el usuario no pierda
 		if (res == 'S' || res == 's')
 		{
 			// system("cls");
-			dificultad(nombrejugador, diff, puntos);
+			dificultad(nombrejugador, diff, puntos); // llamado a la funcion dificultad
 		}
 	} while (res == 'S' || res == 's');
 	// si el caracter ingresado es S repite el juego
 
+	// se llama a la funcion tabla posiciones con select igual a 1 si el usuario sale del juego
 	tablaPosiciones(nombrejugador, diff, puntos, select);
 
 	// se pregunta si se quiere volver al menu o salir
@@ -365,34 +379,40 @@ int juego(char palabras[], char nombrejugador[], int diff, int puntos)
 	scanf("%s", &res1);
 	if (res1 == 'N' || res1 == 'n')
 	{ // si el caracter ingresado es N regresara al menu
+		system("cls");
 		menu();
 	}
 	else
 	{
+		// se sale del programa
 		printf("\nGracias por jugar!\n");
 		system("pause");
 		exit(0);
 	}
 }
 
+// determina que dificultad se esta jugando y se envia a la funcion correspondiente si el usuario quiere jugar de nuevo
 void dificultad(char nombrejugador[], int diff, int puntos)
 {
 	fflush(stdin);
 	switch (diff)
 	{
 	case 1:
+		// si diff es 1, regresa a la funcion de la dificultad facil
 		nivelFacil(nombrejugador, diff, puntos);
 		break;
 	case 2:
+		// si diff es 1, regresa a la funcion de la dificultad media
 		nivelIntermedio(nombrejugador, diff, puntos);
 		break;
 	case 3:
+		// si diff es 1, regresa a la funcion de la dificultad dificil
 		nivelDificil(nombrejugador, diff, puntos);
 		break;
 	}
 }
 
-// mostrar y guardar el puntaje
+// funcion que determina cuantos intentos restantes hay
 void intento(int intentos)
 {
 	int f = 0;
@@ -400,18 +420,23 @@ void intento(int intentos)
 	printf("\nUsted tiene %d oportunidades restantes.\n", f);
 }
 
+// funcion tabla de posiciones
 void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 {
+	// select puede ser 0 o 1, dependiendo de que funcion llama la tabla de posiciones
+	// si select es 0, significa que el menu llamo la tabla de posiciones
 	if (select == 0)
 	{
+		// se definen variables ademas de un array que contiene la tabla
 		system("cls");
 		char leaderboard[100][100];
 		FILE *tabla;
 		int i = 0, conta = 0, op, n = 0;
-		char f[] = "Nivel facil", m[] = "Nivel intermedio", d[] = "Nivel dificil";
+		char m[] = "Nivel intermedio", d[] = "Nivel dificil";
 		char ef[] = "Fin facil", em[] = "Fin intermedio";
 		tabla = fopen("tabla.txt", "r"); // abre el archivo
 
+		// este bucle guarda todos los valores del archivo de texto en un array
 		while (fgets(leaderboard[i], sizeof(leaderboard), tabla))
 		{
 			leaderboard[i][strlen(leaderboard[i]) - 1] = '\0';
@@ -422,8 +447,8 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 		fclose(tabla);
 
 		do
-		{
-			// system("cls");
+		{ // se repite el menu hasta que el usuario selecciona una opcion
+			system("cls");
 			printf("\n\t\t\t\tJUEGO DEL AHORCADO\n");
 			printf("\nSeleccione la dificultad de las puntuaciones que desea ver :\n");
 			printf("1. Nivel Facil \n");
@@ -434,17 +459,19 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 			scanf("%d", &op);
 		} while (op < 1 || op > 4);
 
-		printf("HIGHSCORES\n\n");
+		system("cls");
 
 		switch (op)
 		{
 		// tabla nivel facil
 		case 1:
+			printf("\t\t\t\tHIGHSCORES\n\n");
 			op = 0;
 			do
-			{
+			{ // se imprimen los contenidos del archivo en seccion del nivel facil
 				for (conta = 0; conta < i; conta++)
 				{
+					// despues del marcador "ef", se imprime el caracter null que no tiene longitud
 					if (strcmp(ef, leaderboard[conta]) == 0)
 					{
 						printf("");
@@ -452,10 +479,12 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 					}
 					else
 					{
+						// se imprime el inicio del documento
 						printf("%s\n", leaderboard[conta]);
 					}
 				}
 
+				// luego pregunta si se quiere volver al menu de puntuaciones o al menu principal
 				printf("\nIngrese la opcion que desee: \n");
 				printf("1. Volver al menu de puntuaciones\n");
 				printf("2. Volver al menu principal\n");
@@ -463,24 +492,30 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 				scanf("%d", &op);
 			} while (op < 1 || op > 2);
 
+			system("cls");
+
 			switch (op)
 			{
 			case 1:
+				// llama de nuevo a la funcion de la tabla con select = 0
 				tablaPosiciones(nombrejugador, diff, puntos, select);
 				break;
 			case 2:
+				// regresa al menu principal
 				menu();
 				break;
 			}
 			break;
 
-		// tabla nivel medio
+		// tabla nivel intermedio
 		case 2:
+			printf("\t\t\t\tHIGHSCORES\n\n");
 			op = 0;
 			do
-			{
+			{ // se imprimen los contenidos del archivo en seccion del nivel facil
 				for (conta = 0; conta < i; conta++)
 				{
+					// antes del marcador "m", se imprime el caracter null que no tiene longitud
 					if (strcmp(m, leaderboard[conta]) == 0)
 					{
 						printf("");
@@ -491,6 +526,7 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 
 				for (conta = n; conta < i; conta++)
 				{
+					// despues del marcador "em", se imprime el caracter null que no tiene longitud
 					if (strcmp(em, leaderboard[conta]) == 0)
 					{
 						printf("");
@@ -498,8 +534,55 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 					}
 					else
 					{
+						// se imprime la tabla del nivel intermedio
 						printf("%s\n", leaderboard[conta]);
 					}
+				}
+
+				// luego pregunta si se quiere volver al menu de puntuaciones o al menu principal
+				printf("\nIngrese la opcion que desee: \n");
+				printf("1. Volver al menu de puntuaciones\n");
+				printf("2. Volver al menu principal\n");
+				printf("\nIngrese su opcion: ");
+				scanf("%d", &op);
+			} while (op < 1 || op > 2);
+
+			system("cls");
+
+			switch (op)
+			{
+			case 1:
+				// llama de nuevo a la funcion de la tabla con select = 0
+				tablaPosiciones(nombrejugador, diff, puntos, select);
+				break;
+			case 2:
+				// regresa al menu principal
+				menu();
+				break;
+			}
+			break;
+
+		// tabla nivel dificil
+		case 3:
+			printf("\t\t\t\tHIGHSCORES\n\n");
+			op = 0;
+			do
+			{
+				for (conta = 0; conta < i; conta++)
+				{
+					if (strcmp(d, leaderboard[conta]) == 0)
+					{
+						// antes del marcador "d", se imprime el caracter null que no tiene longitud
+						printf("");
+						n = conta;
+						break;
+					}
+				}
+
+				// se imprime el resto del documento
+				for (conta = n; conta < i; conta++)
+				{
+					printf("%s\n", leaderboard[conta]);
 				}
 
 				printf("\nIngrese la opcion que desee: \n");
@@ -514,53 +597,17 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 			switch (op)
 			{
 			case 1:
+				// llama de nuevo a la funcion de la tabla con select = 0
 				tablaPosiciones(nombrejugador, diff, puntos, select);
 				break;
 			case 2:
+				// regresa al menu principal
 				menu();
 				break;
 			}
 			break;
 
-		// tabla nivel dificil
-		case 3:
-			op = 0;
-			do
-			{
-				for (conta = 0; conta < i; conta++)
-				{
-					if (strcmp(d, leaderboard[conta]) == 0)
-					{
-						printf("");
-						n = conta;
-						break;
-					}
-				}
-
-				for (conta = n; conta < i; conta++)
-				{
-					printf("%s\n", leaderboard[conta]);
-				}
-
-				printf("\nIngrese la opcion que desee: \n");
-				printf("1. Volver al menu de puntuaciones\n");
-				printf("2. Volver al menu principal\n");
-				printf("\nIngrese su opcion: ");
-				scanf("%d", &op);
-			} while (op < 1 || op > 2);
-
-			switch (op)
-			{
-			case 1:
-				tablaPosiciones(nombrejugador, diff, puntos, select);
-				break;
-			case 2:
-				menu();
-				break;
-			}
-			break;
-
-			// regresando al menu
+		// regresa al menu principal
 		case 4:
 			menu();
 			break;
@@ -569,18 +616,22 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 	else
 	{
 		// funcion para agregar mas valores a la tabla
+		// la llama la funcion juego ya que envia el valor select = 1
+		// se declaran variables, arrays y marcadores
 		char leaderboard[100][100], niveles[100][100];
-		FILE *tabla2 = fopen("tabla.txt", "r+");
-		int a = 0, i = 0, i2 = 0, conta = 0, op, n = 0, tamano = 0, swap, puntaje[20];
+		FILE *tabla2 = fopen("tabla.txt", "r+"); // se abre el archivo en modo reading
+		int i = 0, i2 = 0, conta = 0, op, n = 0;
 		char f[] = "Nivel facil", m[] = "Nivel intermedio", d[] = "Nivel dificil";
 		char ef[] = "Fin facil", em[] = "Fin intermedio";
 
+		// este bucle guarda todos los valores del archivo de texto en un array
 		while (fgets(leaderboard[i], sizeof(leaderboard), tabla2))
 		{
 			leaderboard[i][strlen(leaderboard[i]) - 1] = '\0';
 			i++;
 		}
 
+		// se cierra el archivo y se vuelve a abrir para borrar completamente los contenidos de este
 		fclose(tabla2);
 		FILE *tabla = fopen("tabla.txt", "w+");
 
@@ -588,19 +639,21 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 		{
 		// tabla nivel facil
 		case 1:
-
 			for (conta = 0; conta < i; conta++)
 			{
 				if (strcmp(ef, leaderboard[conta]) == 0)
 				{
+					// luego se imprime la palabra ademas de los valores de las siguientes dificultades
 					fprintf(tabla, "%s\n%d\n", nombrejugador, puntos);
 					fprintf(tabla, "%s\n", leaderboard[conta]);
 				}
 				else
 				{
+					// se imprimen todos los valores hasta llegar al marcador
 					fprintf(tabla, "%s\n", leaderboard[conta]);
 				}
 			}
+			// se cierra el archivo para actualizarlo
 			fclose(tabla);
 			break;
 
@@ -611,14 +664,17 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 			{
 				if (strcmp(em, leaderboard[conta]) == 0)
 				{
+					// luego se imprime la palabra ademas de los valores de la siguiente dificultad
 					fprintf(tabla, "%s\n%d\n", nombrejugador, puntos);
 					fprintf(tabla, "%s\n", leaderboard[conta]);
 				}
 				else
 				{
+					// se imprimen todos los valores hasta llegar al marcador
 					fprintf(tabla, "%s\n", leaderboard[conta]);
 				}
 			}
+			// se cierra el archivo para actualizarlo
 			fclose(tabla);
 			break;
 
@@ -626,8 +682,10 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 		case 3:
 			for (conta = 0; conta < i; conta++)
 			{
+				// se imprimen todos los valores anteriores
 				fprintf(tabla, "%s\n", leaderboard[conta]);
 			}
+			// hasta el final se imprime el nuevo puntaje
 			fprintf(tabla, "%s\n%d\n", nombrejugador, puntos);
 			fclose(tabla);
 			break;
@@ -689,6 +747,7 @@ int ingresarPalabras()
 				fclose(ez);
 				fclose(mid);
 				fclose(hard);
+				system("cls");
 				menu();
 			}
 
@@ -778,6 +837,7 @@ int ingresarPalabras()
 		// este loop sirve para que el usuario seleccione entre agregar una nueva palabra y regresar al menu principal
 		while (nueva != 1)
 		{
+			system("cls");
 			nueva = 0;
 			printf("\nEscriba 1 para ingresar una nueva palabra y 2 para regresar al menu principal: ");
 			scanf("%d", &nueva);
@@ -789,6 +849,7 @@ int ingresarPalabras()
 				fclose(ez);
 				fclose(mid);
 				fclose(hard);
+				system("cls");
 				menu();
 				return 1;
 			}
@@ -797,10 +858,12 @@ int ingresarPalabras()
 			{
 				printf("Por favor ingrese 1 o 2\n");
 				nueva = 0;
+				system("pause");
 			}
 			// si se ingresa 1, el valor de la variable "nueva" sigue siendo 1
 			else
 			{
+				fflush(stdin);
 				nueva = 1;
 			}
 		}
