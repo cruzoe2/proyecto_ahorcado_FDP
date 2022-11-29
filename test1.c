@@ -409,6 +409,7 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 		FILE *tabla;
 		int i = 0, conta = 0, op, n = 0;
 		char f[] = "Nivel facil", m[] = "Nivel intermedio", d[] = "Nivel dificil";
+		char ef[] = "Fin facil", em[] = "Fin intermedio";
 		tabla = fopen("tabla.txt", "r"); // abre el archivo
 
 		while (fgets(leaderboard[i], sizeof(leaderboard), tabla))
@@ -444,7 +445,7 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 			{
 				for (conta = 0; conta < i; conta++)
 				{
-					if (strcmp(m, leaderboard[conta]) == 0)
+					if (strcmp(ef, leaderboard[conta]) == 0)
 					{
 						printf("");
 						break;
@@ -490,7 +491,7 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 
 				for (conta = n; conta < i; conta++)
 				{
-					if (strcmp(d, leaderboard[conta]) == 0)
+					if (strcmp(em, leaderboard[conta]) == 0)
 					{
 						printf("");
 						break;
@@ -507,6 +508,8 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 				printf("\nIngrese su opcion: ");
 				scanf("%d", &op);
 			} while (op < 1 || op > 2);
+
+			system("cls");
 
 			switch (op)
 			{
@@ -566,51 +569,39 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 	else
 	{
 		// funcion para agregar mas valores a la tabla
-		char leaderboard[100][100];
-		FILE *tabla = fopen("tabla.txt", "a+");
-		int i = 0, conta = 0, op, n = 0, n2 = 0, length = 0, puntaje[20];
+		char leaderboard[100][100], niveles[100][100];
+		FILE *tabla2 = fopen("tabla.txt", "r+");
+		int a = 0, i = 0, i2 = 0, conta = 0, op, n = 0, tamano = 0, swap, puntaje[20];
 		char f[] = "Nivel facil", m[] = "Nivel intermedio", d[] = "Nivel dificil";
+		char ef[] = "Fin facil", em[] = "Fin intermedio";
 
-		while (fgets(leaderboard[i], sizeof(leaderboard), tabla))
+		while (fgets(leaderboard[i], sizeof(leaderboard), tabla2))
 		{
 			leaderboard[i][strlen(leaderboard[i]) - 1] = '\0';
 			i++;
 		}
 
+		fclose(tabla2);
+		FILE *tabla = fopen("tabla.txt", "w+");
+
 		switch (diff)
 		{
 		// tabla nivel facil
 		case 1:
-			for (conta = 1; conta < i; conta++)
+
+			for (conta = 0; conta < i; conta++)
 			{
-				if (strcmp(m, leaderboard[conta]) == 0)
+				if (strcmp(ef, leaderboard[conta]) == 0)
 				{
-					printf("");
-					break;
+					fprintf(tabla, "%s\n%d\n", nombrejugador, puntos);
+					fprintf(tabla, "%s\n", leaderboard[conta]);
 				}
 				else
 				{
-					n = atoi(leaderboard[conta]);
-
-					if (conta % 2 == 0)
-					{
-						n2++;
-						puntaje[n2] = n;
-					}
+					fprintf(tabla, "%s\n", leaderboard[conta]);
 				}
 			}
-			puntaje[n2 + 1] = puntos;
-			for (conta = 1; conta < n2 + 2; conta++)
-			{
-				printf("%d|", puntaje[conta]);
-			}
-
-			
-
-			//printf("tamano %d", conta);
-
-			fprintf(tabla, "%s\n%d\n", nombrejugador, puntos);
-
+			fclose(tabla);
 			printf("\nse ingreso el nombre %s y el puntaje %d\n", nombrejugador, puntos);
 			system("pause");
 
