@@ -602,71 +602,34 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 				}
 			}
 			fclose(tabla);
-			printf("\nse ingreso el nombre %s y el puntaje %d\n", nombrejugador, puntos);
-			system("pause");
-
 			break;
 
 		// tabla nivel medio
 		case 2:
-			do
+
+			for (conta = 0; conta < i; conta++)
 			{
-				for (conta = 0; conta < i; conta++)
+				if (strcmp(em, leaderboard[conta]) == 0)
 				{
-					if (strcmp(m, leaderboard[conta]) == 0)
-					{
-						printf("");
-						n = conta;
-						break;
-					}
+					fprintf(tabla, "%s\n%d\n", nombrejugador, puntos);
+					fprintf(tabla, "%s\n", leaderboard[conta]);
 				}
-
-				for (conta = n; conta < i; conta++)
+				else
 				{
-					if (strcmp(d, leaderboard[conta]) == 0)
-					{
-						printf("");
-						break;
-					}
-					else
-					{
-						printf("%s\n", leaderboard[conta]);
-					}
+					fprintf(tabla, "%s\n", leaderboard[conta]);
 				}
-
-				printf("\nIngrese la opcion que desee: \n");
-				printf("1. Volver al menu de puntuaciones\n");
-				printf("2. Volver al menu principal\n");
-				printf("\nIngrese su opcion: ");
-				scanf("%d", &op);
-			} while (op < 1 || op > 2);
+			}
+			fclose(tabla);
 			break;
 
 		// tabla nivel dificil
 		case 3:
-			do
+			for (conta = 0; conta < i; conta++)
 			{
-				for (conta = 0; conta < i; conta++)
-				{
-					if (strcmp(d, leaderboard[conta]) == 0)
-					{
-						printf("");
-						n = conta;
-						break;
-					}
-				}
-
-				for (conta = n; conta < i; conta++)
-				{
-					printf("%s\n", leaderboard[conta]);
-				}
-
-				printf("\nIngrese la opcion que desee: \n");
-				printf("1. Volver al menu de puntuaciones\n");
-				printf("2. Volver al menu principal\n");
-				printf("\nIngrese su opcion: ");
-				scanf("%d", &op);
-			} while (op < 1 || op > 2);
+				fprintf(tabla, "%s\n", leaderboard[conta]);
+			}
+			fprintf(tabla, "%s\n%d\n", nombrejugador, puntos);
+			fclose(tabla);
 			break;
 		}
 	}
