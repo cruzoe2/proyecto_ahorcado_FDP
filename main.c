@@ -11,15 +11,15 @@
 
 // Prototipo de funciones
 void menu();
-void seleccionDif();
+void seleccionDif(char nombrejugador[]);
 void nivelFacil(char nombrejugador[], int diff, int puntos);
 void nivelIntermedio(char nombrejugador[], int diff, int puntos);
 void nivelDificil(char nombrejugador[], int diff, int puntos);
 int juego();
-void intento(int e);
-void tablaPosiciones();
-int ingresarPalabras();
 void dificultad(char nombrejugador[], int diff, int puntos);
+void intento(int e);
+void tablaPosiciones(char nombrejugador[]);
+int ingresarPalabras();
 
 // FUNCION PRINCIPAL MAIN
 int main()
@@ -30,47 +30,11 @@ int main()
 	return 0;
 }
 
-// FUNCION DEL MENU seleccionada
+// funcion menu
 void menu()
 {
-	char opcion;
-	do
-	{ // imprime el menu principal varias veces hasta que sea necesario
-		system("cls");
-		printf("\n\t\t\t\tJUEGO DEL AHORCADO\n");
-		printf("\nSeleccione una categoria:\n");
-		printf("1.Jugar \n");
-		printf("2.Ingresar Palabras\n");
-		printf("3.Tabla de posiciones \n");
-		printf("4.Salir \n");
-		printf("Ingrese opcion: ");
-		scanf("%c", &opcion);
-	} while (opcion < '1' || opcion > '4'); // evalua los datos ingresados por el usuario
-
-	switch (opcion)
-	{ // seleeciona el caso ingresado por el usuario
-	case '1':
-		seleccionDif();
-		break; // llamado a la funcion de seleccion de dificultad
-	case '2':
-		ingresarPalabras();
-		break; // ingresar palabras
-	case '3':
-		// void tabla()
-		break; // llamado a la funcion tabla de posiciones
-	case '4':
-		printf("\n\nGracias por jugar!\n\n");
-		break;
-	}
-}
-
-// Selector de dificultad
-void seleccionDif()
-{
-	system("cls");
-	// variables
-	int op, length = 0, puntos = 0;
 	char player[100]; // guardando nombre del usuario
+	int length = 0;
 
 	// inicio del juego y obteniedo nombre del usuario
 	printf("\n\t\t\t\tJUEGO DEL AHORCADO\n");
@@ -94,11 +58,49 @@ void seleccionDif()
 	// depuracion para saber si es correcta la longitud del string final
 	// printf("La longitud del nombre es %d\n\n", strlen(nombrejugador));
 	// system("pause");
+	
+	char opcion;
+	do
+	{ // imprime el menu principal varias veces hasta que sea necesario
+		system("cls");
+		printf("%s, bienvenido a nuestro juego!\n\n", nombrejugador);
+		printf("\n\t\t\t\tJUEGO DEL AHORCADO\n");
+		printf("\nSeleccione una categoria:\n");
+		printf("1.Jugar \n");
+		printf("2.Ingresar Palabras\n");
+		printf("3.Tabla de posiciones \n");
+		printf("4.Salir \n");
+		printf("Ingrese opcion: ");
+		scanf("%c", &opcion);
+	} while (opcion < '1' || opcion > '4'); // evalua los datos ingresados por el usuario
+
+	switch (opcion)
+	{ // selecciona el caso ingresado por el usuario
+	case '1':
+		seleccionDif(nombrejugador);
+		break; // llamado a la funcion de seleccion de dificultad
+	case '2':
+		ingresarPalabras();
+		break; // llamado a la funcion ingresar palabras
+	case '3':
+		tablaPosiciones(nombrejugador);
+		break; // llamado a la funcion tabla de posiciones
+	case '4':
+		printf("\n\nGracias por jugar!\n\n");
+		break;
+	}
+}
+
+// Selector de dificultad
+void seleccionDif(char nombrejugador[])
+{
+	system("cls");
+	// variables
+	int op, length = 0, puntos = 0;
 
 	do
 	{
 		system("cls");
-		printf("%s, bienvenido a nuestro juego!\n\n", player);
 		printf("\n\t\t\t\tJUEGO DEL AHORCADO\n");
 		printf("\nSELECCIONE EL NIVEL DE DIFICULTAD CON EL DESEA JUGAR:\n");
 		printf("1. Nivel Facil \n");
