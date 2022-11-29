@@ -431,7 +431,7 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 		system("cls");
 		char leaderboard[100][100];
 		FILE *tabla;
-		int i = 0, conta = 0, op, n = 0;
+		int i = 0, conta = 0, op, tamano = 0, n = 0, puntaje[20], swap, a = 0;
 		char m[] = "Nivel intermedio", d[] = "Nivel dificil";
 		char ef[] = "Fin facil", em[] = "Fin intermedio";
 		tabla = fopen("tabla.txt", "r"); // abre el archivo
@@ -471,17 +471,45 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 			{ // se imprimen los contenidos del archivo en seccion del nivel facil
 				for (conta = 0; conta < i; conta++)
 				{
-					// despues del marcador "ef", se imprime el caracter null que no tiene longitud
-					if (strcmp(ef, leaderboard[conta]) == 0)
+					// despues del marcador "m", se imprime el caracter null que no tiene longitud
+					if (strcmp(m, leaderboard[conta]) == 0)
 					{
 						printf("");
 						break;
 					}
 					else
 					{
-						// se imprime el inicio del documento
-						printf("%s\n", leaderboard[conta]);
+						n = atoi(leaderboard[conta]);
+						// se almacena el leaderboard en un array de int solo si conta es par
+						if (conta % 2 == 0)
+						{
+							puntaje[tamano] = n;
+							tamano++;
+						}
 					}
+				}
+
+				// se accede a cada elemento del array puntaje
+				for (conta = 0; conta < tamano - 1; conta++)
+				{
+					// se comparan los elementos adjacentes del array
+					for (a = 0; a < tamano - conta - 1; a++)
+					{
+						// se ordenan los elementos
+						if (puntaje[a] < puntaje[a + 1])
+						{
+							swap = puntaje[a];
+							puntaje[a] = puntaje[a + 1];
+							puntaje[a + 1] = swap;
+						}
+					}
+				}
+
+				// Se imprimen los puntajes
+				for (conta = 0; conta < tamano - 1; conta++)
+				{
+					printf("%d. %s - ", conta + 1, leaderboard[(conta * 2) + 1]);
+					printf("%d puntos\n", puntaje[conta]);
 				}
 
 				// luego pregunta si se quiere volver al menu de puntuaciones o al menu principal
@@ -534,9 +562,37 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 					}
 					else
 					{
-						// se imprime la tabla del nivel intermedio
-						printf("%s\n", leaderboard[conta]);
+						n = atoi(leaderboard[conta]);
+						// se almacena el leaderboard en un array de int solo si conta es par
+						if (conta % 2 == 0)
+						{
+							puntaje[tamano] = n;
+							tamano++;
+						}
 					}
+				}
+
+				// se accede a cada elemento del array puntaje
+				for (conta = 0; conta < tamano - 1; conta++)
+				{
+					// se comparan los elementos adjacentes del array
+					for (a = 0; a < tamano - conta - 1; a++)
+					{
+						// se ordenan los elementos
+						if (puntaje[a] < puntaje[a + 1])
+						{
+							swap = puntaje[a];
+							puntaje[a] = puntaje[a + 1];
+							puntaje[a + 1] = swap;
+						}
+					}
+				}
+
+				// Se imprimen los puntajes
+				for (conta = 0; conta < tamano - 1; conta++)
+				{
+					printf("%d. %s - ", conta + 1, leaderboard[(conta * 2) + 1]);
+					printf("%d puntos\n", puntaje[conta]);
 				}
 
 				// luego pregunta si se quiere volver al menu de puntuaciones o al menu principal
@@ -582,7 +638,36 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 				// se imprime el resto del documento
 				for (conta = n; conta < i; conta++)
 				{
-					printf("%s\n", leaderboard[conta]);
+					n = atoi(leaderboard[conta]);
+						// se almacena el leaderboard en un array de int solo si conta es par
+						if (conta % 2 == 0)
+						{
+							puntaje[tamano] = n;
+							tamano++;
+						}
+				}
+
+				// se accede a cada elemento del array puntaje
+				for (conta = 0; conta < tamano - 1; conta++)
+				{
+					// se comparan los elementos adjacentes del array
+					for (a = 0; a < tamano - conta - 1; a++)
+					{
+						// se ordenan los elementos
+						if (puntaje[a] < puntaje[a + 1])
+						{
+							swap = puntaje[a];
+							puntaje[a] = puntaje[a + 1];
+							puntaje[a + 1] = swap;
+						}
+					}
+				}
+
+				// Se imprimen los puntajes
+				for (conta = 0; conta < tamano - 1; conta++)
+				{
+					printf("%d. %s - ", conta + 1, leaderboard[(conta * 2) + 1]);
+					printf("%d puntos\n", puntaje[conta]);
 				}
 
 				printf("\nIngrese la opcion que desee: \n");
