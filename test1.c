@@ -567,8 +567,8 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 	{
 		// funcion para agregar mas valores a la tabla
 		char leaderboard[100][100];
-		FILE *tabla = fopen("tabla.txt", "a");
-		int i = 0, conta = 0, op, n = 0;
+		FILE *tabla = fopen("tabla.txt", "a+");
+		int i = 0, conta = 0, op, n = 0, n2 = 0, length = 0, puntaje[20];
 		char f[] = "Nivel facil", m[] = "Nivel intermedio", d[] = "Nivel dificil";
 
 		while (fgets(leaderboard[i], sizeof(leaderboard), tabla))
@@ -581,9 +581,37 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 		{
 		// tabla nivel facil
 		case 1:
+			for (conta = 1; conta < i; conta++)
+			{
+				if (strcmp(m, leaderboard[conta]) == 0)
+				{
+					printf("");
+					break;
+				}
+				else
+				{
+					n = atoi(leaderboard[conta]);
+
+					if (conta % 2 == 0)
+					{
+						n2++;
+						puntaje[n2] = n;
+					}
+				}
+			}
+			puntaje[n2 + 1] = puntos;
+			for (conta = 1; conta < n2 + 2; conta++)
+			{
+				printf("%d|", puntaje[conta]);
+			}
+
+			
+
+			//printf("tamano %d", conta);
+
 			fprintf(tabla, "%s\n%d\n", nombrejugador, puntos);
 
-			printf("se ingreso");
+			printf("\nse ingreso el nombre %s y el puntaje %d\n", nombrejugador, puntos);
 			system("pause");
 
 			break;
