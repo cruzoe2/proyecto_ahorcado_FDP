@@ -4,18 +4,20 @@ oliver
 andre
 80
 tony
-60
+70
+Fin facil
 Nivel intermedio
-andre
-120
 oliver
-70
+200
+andre
+80
 tony
-60
+50
+Fin intermedio
 Nivel dificil
-tony
-70
+oliver
+100
 andre
 40
-oliver
-30
+tony
+20
