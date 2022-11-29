@@ -86,7 +86,7 @@ void menu()
 		tablaPosiciones(nombrejugador, diff, puntos, select);
 		break; // llamado a la funcion tabla de posiciones
 	case '4':
-		printf("\n\nGracias por jugar!\n\n"); //termina el juego
+		printf("\n\nGracias por jugar!\n\n");
 		break;
 	}
 }
@@ -96,9 +96,8 @@ void seleccionDif(char nombrejugador[])
 {
 	system("cls");
 	// variables
-	int op, puntos = 0;
+	int op, length = 0, puntos = 0;
 
-//menu seleccion de dificultad
 	do
 	{
 		system("cls");
@@ -112,17 +111,16 @@ void seleccionDif(char nombrejugador[])
 		scanf("%d", &op);
 	} while (op < 1 || op > 4);
 
-//manda a llamar nivel dependiendo de lo ingreseda por el jugador
 	switch (op)
 	{
 	case 1:
-		nivelFacil(nombrejugador, op, puntos); // manda la variable nombrejugador y llama a la funcion nivelfacil
+		nivelFacil(nombrejugador, op, puntos);
 		break;
 	case 2:
-		nivelIntermedio(nombrejugador, op, puntos); // manda la variable nombrejugador y llama a la funcion nivelIntermedio
+		nivelIntermedio(nombrejugador, op, puntos);
 		break;
 	case 3:
-		nivelDificil(nombrejugador, op, puntos); // manda la variable nombrejugador y llama a la funcion nivelDificil
+		nivelDificil(nombrejugador, op, puntos);
 		break;
 	case 4:
 		menu(); // regresando al menu
@@ -130,24 +128,21 @@ void seleccionDif(char nombrejugador[])
 	}
 }
 
-//funcion de nivel facil
 void nivelFacil(char nombrejugador[], int diff, int puntos)
 {
-	//variables
 	system("cls");
 	char palabras[100][100];
 	FILE *facil;
-	int i = 0;
+	int i = 0, conta = 0;
 	facil = fopen("facil.txt", "r"); // abre el archivo en solo lectura
 
-//lee las palabras en el txt para ingresarlas al arreglo palabras
 	while (fgets(palabras[i], 100, facil))
 	{
 		palabras[i][strlen(palabras[i]) - 1] = '\0';
 		i++;
 	}
 
-	fclose(facil); //cierra el archivo
+	fclose(facil);
 
 	// se da una semilla para el generador y se genera un numero aleatorio
 	srand(time(NULL));
@@ -165,14 +160,12 @@ void nivelFacil(char nombrejugador[], int diff, int puntos)
 	juego(palabras[n], nombrejugador, diff, puntos); // mandando el valor a la funcion juego
 }
 
-//funcion de nivel intermedio
 void nivelIntermedio(char nombrejugador[], int diff, int puntos)
 {
 	system("cls");
-//se declaran varibles
 	char palabras[100][100];
 	FILE *facil;
-	int i = 0;
+	int i = 0, conta = 0;
 	facil = fopen("medio.txt", "r"); // abre el archivo en solo lectura
 
 	while (fgets(palabras[i], 100, facil))
@@ -204,7 +197,7 @@ void nivelDificil(char nombrejugador[], int diff, int puntos)
 	system("cls");
 	char palabras[100][100];
 	FILE *facil;
-	int i = 0;
+	int i = 0, conta = 0;
 	facil = fopen("dificil.txt", "r"); // abre el archivo en solo lectura
 
 	while (fgets(palabras[i], 100, facil))
@@ -332,7 +325,7 @@ int juego(char palabras[], char nombrejugador[], int diff, int puntos)
 			printf("La palabra correcta era: ");
 			for (i = 0; i < longitud; i++)
 			{
-				printf("%c", palabras[i]);
+				printf("%c", palabras[i]); // se imprime el valor del parametro que tenia la funcion jugar
 			}
 		}
 
@@ -574,8 +567,8 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 	{
 		// funcion para agregar mas valores a la tabla
 		char leaderboard[100][100];
-		FILE *tabla = fopen("tabla.txt", "a");
-		int i = 0, conta = 0, op, n = 0;
+		FILE *tabla = fopen("tabla.txt", "a+");
+		int i = 0, conta = 0, op, n = 0, n2 = 0, length = 0, puntaje[20];
 		char f[] = "Nivel facil", m[] = "Nivel intermedio", d[] = "Nivel dificil";
 
 		while (fgets(leaderboard[i], sizeof(leaderboard), tabla))
@@ -588,9 +581,37 @@ void tablaPosiciones(char nombrejugador[], int diff, int puntos, int select)
 		{
 		// tabla nivel facil
 		case 1:
+			for (conta = 1; conta < i; conta++)
+			{
+				if (strcmp(m, leaderboard[conta]) == 0)
+				{
+					printf("");
+					break;
+				}
+				else
+				{
+					n = atoi(leaderboard[conta]);
+
+					if (conta % 2 == 0)
+					{
+						n2++;
+						puntaje[n2] = n;
+					}
+				}
+			}
+			puntaje[n2 + 1] = puntos;
+			for (conta = 1; conta < n2 + 2; conta++)
+			{
+				printf("%d|", puntaje[conta]);
+			}
+
+			
+
+			//printf("tamano %d", conta);
+
 			fprintf(tabla, "%s\n%d\n", nombrejugador, puntos);
 
-			printf("se ingreso");
+			printf("\nse ingreso el nombre %s y el puntaje %d\n", nombrejugador, puntos);
 			system("pause");
 
 			break;
