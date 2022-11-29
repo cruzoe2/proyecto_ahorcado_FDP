@@ -1,0 +1,21 @@
+Nivel facil
+oliver
+100
+andre
+80
+tony
+60
+Nivel intermedio
+andre
+120
+oliver
+70
+tony
+60
+Nivel dificil
+tony
+70
+andre
+40
+oliver
+30
